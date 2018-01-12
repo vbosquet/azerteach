@@ -1,0 +1,13 @@
+<!-- Begin page heading -->
+<h1 class="page-heading">New <%= @singular %> <small>Insert a new <%= @singular %> into the database</small></h1>
+<!-- End page heading -->
+
+<!-- Begin breadcrumb -->
+<ol class="breadcrumb default square rsaquo sm">
+	<li><a href="/admin"><i class="fa fa-home"></i></a></li>
+	<li><a href="/admin/<%= @model_name.pluralize.underscore %>"><%= @model_name.pluralize %></a></li>
+	<li class="active">New</li>
+</ol>
+<!-- End breadcrumb -->
+
+<%%= render :partial => 'form' %>

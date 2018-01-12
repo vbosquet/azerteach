@@ -1,0 +1,15 @@
+.DS_Store
+.bundle
+log/*.log
+tmp/**/*
+config/database.yml
+db/*.sqlite3
+doc/api
+doc/app
+Gemfile
+Gemfile.lock
+.rvmrc
+public/system/*
+public/system/**/*
+.ruby-version
+.sass-cache/

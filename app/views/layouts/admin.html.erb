@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Admin</title>
+ 
+    <%= stylesheet_link_tag 'sentir' %>
+    <%= javascript_include_tag 'sentir' %>
+    
+    <%= csrf_meta_tags %>
+ 
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+ 
+	<body class="tooltips">
+	
+		
+		
+		
+		<!--
+		===========================================================
+		BEGIN PAGE
+		===========================================================
+		-->
+		<div class="wrapper">
+			<!-- BEGIN TOP NAV -->
+			<div class="top-navbar">
+				<div class="top-navbar-inner">
+					
+					<!-- Begin Logo brand -->
+					<div class="logo-brand">
+						<a href="/admin"><%= image_tag 'sentir/logo.png' %></a>
+					</div><!-- /.logo-brand -->
+					<!-- End Logo brand -->
+					
+					<div class="top-nav-content">
+						
+						<!-- Begin button sidebar left toggle -->
+						<div class="btn-collapse-sidebar-left">
+							<i class="fa fa-bars"></i>
+						</div><!-- /.btn-collapse-sidebar-left -->
+						<!-- End button sidebar left toggle -->
+						
+						<!-- Begin button nav toggle -->
+						<div class="btn-collapse-nav" data-toggle="collapse" data-target="#main-fixed-nav">
+							<i class="fa fa-plus icon-plus"></i>
+						</div><!-- /.btn-collapse-sidebar-right -->
+						<!-- End button nav toggle -->
+						
+						
+						<!-- Begin user session nav -->
+						<ul class="nav-user navbar-right">
+							<li class="dropdown">
+							  <a href="#fakelink" class="dropdown-toggle" data-toggle="dropdown">
+                  <%= image_tag 'sentir/avatar.jpg', :class => 'avatar img-circle' %>
+                  <%= current_user.email %>
+							  </a>
+							  <ul class="dropdown-menu square primary margin-list-rounded with-triangle">
+								<li><a href="#fakelink">My account</a></li>
+								<li><a href="#fakelink">Change password</a></li>
+								<li class="divider"></li>
+								<li><a href="/users/sign_out" data-method="delete" rel="nofollow">Logout</a></li>
+							  </ul>
+							</li>
+						</ul>
+						<!-- End user session nav -->
+						
+						<!-- Begin Collapse menu nav -->
+						<div class="collapse navbar-collapse" id="main-fixed-nav">
+							<!-- Begin nav search form -->
+							<form class="navbar-form navbar-left" role="search">
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="Search">
+								</div>
+							</form>
+							<!-- End nav search form -->
+							<ul class="nav navbar-nav navbar-left">
+								<!-- Begin nav notification -->
+								<li class="dropdown">
+									<a href="#fakelink" class="dropdown-toggle" data-toggle="dropdown">
+										<span class="badge badge-danger icon-count">7</span>
+										<i class="fa fa-bell"></i>
+									</a>
+									<ul class="dropdown-menu square with-triangle">
+										<li>
+											<div class="nav-dropdown-heading">
+											Notifications
+											</div><!-- /.nav-dropdown-heading -->
+											<div class="nav-dropdown-content scroll-nav-dropdown">
+												<ul>
+													<li class="unread"><a href="#fakelink">
+                            <%= image_tag 'sentir/avatar.jpg', :class => 'absolute-left-content img-circle' %>
+														<strong>Thomas White</strong> posted on your profile page
+														<span class="small-caps">17 seconds ago</span>
+													</a></li>
+													<li class="unread"><a href="#fakelink">
+                            <%= image_tag 'sentir/avatar.jpg', :class => 'absolute-left-content img-circle' %>
+														<strong>Doina Slaivici</strong> uploaded photo
+														<span class="small-caps">10 minutes ago</span>
+													</a></li>
+												</ul>
+											</div><!-- /.nav-dropdown-content scroll-nav-dropdown -->
+											<button class="btn btn-primary btn-square btn-block">See all notifications</button>
+										</li>
+									</ul>
+								</li>
+								<!-- End nav notification -->
+							</ul>
+						</div><!-- /.navbar-collapse -->
+						<!-- End Collapse menu nav -->
+					</div><!-- /.top-nav-content -->
+				</div><!-- /.top-navbar-inner -->
+			</div><!-- /.top-navbar -->
+			<!-- END TOP NAV -->
+			
+			
+			
+			<!-- BEGIN SIDEBAR LEFT -->
+			<div class="sidebar-left sidebar-nicescroller">
+				<ul class="sidebar-menu">
+					<li>
+						<a href="/admin">
+							<i class="fa fa-dashboard icon-sidebar"></i>
+							Dashboard
+						</a>
+					</li>
+					<li>
+						<a href="/admin/users">
+							<i class="fa fa-users icon-sidebar"></i>
+							Users
+						</a>
+					</li>
+					<li>
+						<a href="#fakelink">
+							<i class="fa fa-cog icon-sidebar"></i>
+							<i class="fa fa-angle-right chevron-icon-sidebar"></i>
+							With submenu
+						</a>
+						<ul class="submenu">
+							<li><a href="#">Submenu1</a></li>
+							<li><a href="#">Submenu2</a></li>
+							<li><a href="#">Submenu3</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div><!-- /.sidebar-left -->
+			<!-- END SIDEBAR LEFT -->
+			
+			
+			<!-- BEGIN PAGE CONTENT -->
+			<div class="page-content">
+				<div class="container-fluid">
+          <%= flash_message(flash) %>
+          <%= yield %>
+				</div><!-- /.container-fluid -->
+				
+				
+				<!-- BEGIN FOOTER -->
+				<footer>
+					&copy; 2017 <a href="http://intotheweb.be">IntoTheWeb</a>
+				</footer>
+				<!-- END FOOTER -->
+				
+				
+			</div><!-- /.page-content -->
+		</div><!-- /.wrapper -->
+		<!-- END PAGE CONTENT -->
+		
+		
+	
+		<!-- BEGIN BACK TO TOP BUTTON -->
+		<div id="back-top">
+			<a href="#top"><i class="fa fa-chevron-up"></i></a>
+		</div>
+		<!-- END BACK TO TOP -->
+		
+		
+		<!--
+		===========================================================
+		END PAGE
+		===========================================================
+		-->
+	</body>
+</html>

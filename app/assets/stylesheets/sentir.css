@@ -1,0 +1,14 @@
+/*
+ *= require_self
+ *= require sentir/bootstrap.min
+ *= require plugins/font-awesome/font-awesome.min
+ *= require plugins/chosen/chosen.min
+ *= require plugins/icheck/skins/square/grey
+ *= require plugins/validator/bootstrapValidator.min
+ *= require plugins/magnific-popup/magnific-popup.min
+ *= require plugins/datepicker/datepicker.min
+ *= require plugins/datatable/bootstrap.datatable.min
+ *= require plugins/toastr/toastr
+ *= require sentir/style
+ *= require sentir/style-responsive
+ */
