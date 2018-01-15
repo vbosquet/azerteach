@@ -4,7 +4,6 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Admin</title>
- 
     <%= stylesheet_link_tag 'sentir' %>
     <%= javascript_include_tag 'sentir' %>
     
@@ -57,62 +56,14 @@
 						<ul class="nav-user navbar-right">
 							<li class="dropdown">
 							  <a href="#fakelink" class="dropdown-toggle" data-toggle="dropdown">
-                  <%= image_tag 'sentir/avatar.jpg', :class => 'avatar img-circle' %>
                   <%= current_user.email %>
 							  </a>
 							  <ul class="dropdown-menu square primary margin-list-rounded with-triangle">
-								<li><a href="#fakelink">My account</a></li>
-								<li><a href="#fakelink">Change password</a></li>
-								<li class="divider"></li>
-								<li><a href="/users/sign_out" data-method="delete" rel="nofollow">Logout</a></li>
+								<li><a href="/users/sign_out" data-method="delete" rel="nofollow">Déconnexion</a></li>
 							  </ul>
 							</li>
 						</ul>
 						<!-- End user session nav -->
-						
-						<!-- Begin Collapse menu nav -->
-						<div class="collapse navbar-collapse" id="main-fixed-nav">
-							<!-- Begin nav search form -->
-							<form class="navbar-form navbar-left" role="search">
-								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Search">
-								</div>
-							</form>
-							<!-- End nav search form -->
-							<ul class="nav navbar-nav navbar-left">
-								<!-- Begin nav notification -->
-								<li class="dropdown">
-									<a href="#fakelink" class="dropdown-toggle" data-toggle="dropdown">
-										<span class="badge badge-danger icon-count">7</span>
-										<i class="fa fa-bell"></i>
-									</a>
-									<ul class="dropdown-menu square with-triangle">
-										<li>
-											<div class="nav-dropdown-heading">
-											Notifications
-											</div><!-- /.nav-dropdown-heading -->
-											<div class="nav-dropdown-content scroll-nav-dropdown">
-												<ul>
-													<li class="unread"><a href="#fakelink">
-                            <%= image_tag 'sentir/avatar.jpg', :class => 'absolute-left-content img-circle' %>
-														<strong>Thomas White</strong> posted on your profile page
-														<span class="small-caps">17 seconds ago</span>
-													</a></li>
-													<li class="unread"><a href="#fakelink">
-                            <%= image_tag 'sentir/avatar.jpg', :class => 'absolute-left-content img-circle' %>
-														<strong>Doina Slaivici</strong> uploaded photo
-														<span class="small-caps">10 minutes ago</span>
-													</a></li>
-												</ul>
-											</div><!-- /.nav-dropdown-content scroll-nav-dropdown -->
-											<button class="btn btn-primary btn-square btn-block">See all notifications</button>
-										</li>
-									</ul>
-								</li>
-								<!-- End nav notification -->
-							</ul>
-						</div><!-- /.navbar-collapse -->
-						<!-- End Collapse menu nav -->
 					</div><!-- /.top-nav-content -->
 				</div><!-- /.top-navbar-inner -->
 			</div><!-- /.top-navbar -->
@@ -126,27 +77,45 @@
 					<li>
 						<a href="/admin">
 							<i class="fa fa-dashboard icon-sidebar"></i>
-							Dashboard
+							Tableau de bord
 						</a>
 					</li>
 					<li>
 						<a href="/admin/users">
 							<i class="fa fa-users icon-sidebar"></i>
-							Users
+							Administrateurs
 						</a>
 					</li>
-					<li>
-						<a href="#fakelink">
-							<i class="fa fa-cog icon-sidebar"></i>
-							<i class="fa fa-angle-right chevron-icon-sidebar"></i>
-							With submenu
-						</a>
-						<ul class="submenu">
-							<li><a href="#">Submenu1</a></li>
-							<li><a href="#">Submenu2</a></li>
-							<li><a href="#">Submenu3</a></li>
-						</ul>
-					</li>
+          <li>
+            <a href="/admin/students">
+              <i class="fa fa-users icon-sidebar"></i>
+              Elèves
+            </a>
+          </li>
+          <li>
+            <a href="/admin/teachers">
+              <i class="fa fa-users icon-sidebar"></i>
+              Professeurs
+            </a>
+          </li>
+          <li>
+            <a href="/admin/products">
+              <i class="fa fa-users icon-sidebar"></i>
+              Types de cours
+            </a>
+          </li>
+          <li>
+            <a href="/admin/lessons">
+              <i class="fa fa-users icon-sidebar"></i>
+              Réservations
+            </a>
+          </li>
+          <li>
+            <a href="/admin/invoices">
+              <i class="fa fa-users icon-sidebar"></i>
+              Factures
+            </a>
+          </li>
 				</ul>
 			</div><!-- /.sidebar-left -->
 			<!-- END SIDEBAR LEFT -->
@@ -162,7 +131,7 @@
 				
 				<!-- BEGIN FOOTER -->
 				<footer>
-					&copy; 2017 <a href="http://intotheweb.be">IntoTheWeb</a>
+					&copy; 2017 <a href="https://www.azerteach.com/">Azerteach</a>
 				</footer>
 				<!-- END FOOTER -->
 				

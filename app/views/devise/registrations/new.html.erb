@@ -1,0 +1,21 @@
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="form-group has-feedback lg left-feedback no-label">
+    <%= f.email_field :email, autofocus: true, class: "form-control no-border input-lg rounded", placeholder: "Votre email" %>
+    <span class="fa fa-envelope form-control-feedback"></span>
+  </div>
+  <div class="form-group has-feedback lg left-feedback no-label">
+    <%= f.password_field :password, autocomplete: "off", class: "form-control no-border input-lg rounded", placeholder: "Votre mot de passe" %>
+    <span class="fa fa-lock form-control-feedback"></span>
+  </div>
+  <div class="form-group has-feedback lg left-feedback no-label">
+    <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control no-border input-lg rounded", placeholder: "Confirmer mot de passe" %>
+    <span class="fa fa-unlock form-control-feedback"></span>
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-warning btn-lg btn-perspective btn-block">INSCRIPTION</button>
+  </div>
+<% end %>
+
+<%= render "devise/shared/links" %>

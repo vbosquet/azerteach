@@ -17,3 +17,6 @@
 //= require plugins/toastr/toastr
 //= require sentir/apps
 //= require sentir/custom
+//= require moment
+//= require moment/fr
+//= require bootstrap-datetimepicker

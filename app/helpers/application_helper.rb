@@ -27,7 +27,7 @@ module ApplicationHelper
           <div class="col-sm-12">
           	<div class="alert #{klass} fade in alert-dismissable">
           	  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-          	  <strong>#{title}!</strong> #{message}
+          	  #{message}
           	</div>
           </div>
         </div>
