@@ -21,4 +21,21 @@ $(document).ready(function() {
 	
   	return false;
   });
+
+  $('#start-date, #end-date').datetimepicker({
+      locale: 'fr'
+  });
+
+  $('#lessons-select').on('change', function() {
+      var studentId = $("#student-select").val();
+      $.ajax({
+          type: 'GET',
+          url: '/admin/update_lessons_select',
+          dataType: "json",
+          data: {student_id: studentId},
+          complete: function(result) {
+              console.log("OK");
+          }
+      });
+  });
 });
