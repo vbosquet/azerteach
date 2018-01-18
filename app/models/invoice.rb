@@ -38,4 +38,23 @@ class Invoice < ApplicationRecord
     self.save!
     File.delete(pdf_path) if File.exist?(pdf_path)
   end
+
+  def update_line_items(new_lesson_ids)
+    lesson_ids = self.lessons.map(&:id)
+    if lesson_ids.size > new_lesson_ids.size # remove line_items from invoice
+      items = self.line_items.where('lesson_id NOT IN(?)', new_lesson_ids)
+      items.each do |item|
+        item.invoice_id = nil 
+        item.save
+      end
+    elsif lesson_ids.size < new_lesson_ids.size # add line_items to invoive
+      items = LineItem.where("lesson_id IN(?) and student_id = ?", new_lesson_ids, self.student_id)
+      Rails.logger.debug("ITEMS: #{items.inspect}")
+      items.each do |item|
+        item.invoice_id = self.id 
+        item.save
+      end
+    end
+  end
+
 end

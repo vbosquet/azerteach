@@ -28,11 +28,12 @@ $(document).ready(function() {
 
   $('#student-select').on('change', function() {
       var studentId = $(this).val();
+      var invoiceId = $(this).data('invoice');
       $.ajax({
           type: 'GET',
           url: '/admin/update_lessons_select',
           dataType: "json",
-          data: {student_id: studentId},
+          data: {student_id: studentId, invoice_id: invoiceId},
           complete: function(result) {
               data = result.responseJSON;
 
@@ -45,13 +46,24 @@ $(document).ready(function() {
 
               if (typeof data !== 'undefined' && data.lessons.length > 0) {
                   for(var i = 0; i < data.lessons.length; i++) {
+                      var option = '<option ';
                       var productName = "";
+                      
                       for(var j = 0; j < data.products.length; j++) {
                           if (data.products[j].id === data.lessons[i].product_id) {
                               productName = data.products[j].name;
                           }
                       }
-                      $('#lessons-select').append('<option value="' + data.lessons[i].id + '">' + productName + ' - '
+
+                      if(data.selected_lessons != null) {
+                        for(var j = 0; j < data.selected_lessons.length; j++) {
+                          if (data.selected_lessons[j].id == data.lessons[i].id) {
+                            option = option + 'selected="selected" ';
+                          }
+                        }
+                      }
+
+                      $('#lessons-select').append(option + 'value="' + data.lessons[i].id + '">' + productName + ' - '
                           + moment(data.lessons[i].start_date).format("DD/MM/YYYY") + '</option>');
                   }
               }

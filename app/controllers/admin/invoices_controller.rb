@@ -25,7 +25,7 @@ class Admin::InvoicesController < Admin::AdminController
     @invoice = Invoice.new(invoice_params)
     @lessons = Lesson.joins(:students, :line_items).where('line_items.paid = ? and line_items.invoice_id IS NULL and students.id = ?', false, params[:invoice][:student_id]).distinct
     if params[:lesson_ids].present?
-      @lessons = @lessons.where('id IN (?)', params[:lesson_ids])
+      @lessons = @lessons.where('lessons.id IN (?)', params[:lesson_ids])
     end
     if @invoice.save
       @lessons.each do |lesson|
@@ -43,13 +43,23 @@ class Admin::InvoicesController < Admin::AdminController
   
   def edit
     @invoice = Invoice.find(params[:id])
-    @lessons = Lesson.joins(:line_items).where('line_items.paid = ? and line_items.invoice_id IS NULL', false).distinct
+    @lessons = Lesson.joins(:line_items).where('line_items.paid = ? and (line_items.invoice_id IS NULL or line_items.invoice_id = ?)', false, @invoice.id).distinct
     @selected_lessons = @invoice.lessons
   end
   
   def update
     @invoice = Invoice.find(params[:id])
     if @invoice.update_attributes(invoice_params)
+
+      if params[:lesson_ids].present?
+        @invoice.update_line_items(params[:lesson_ids])
+      elsif params[:all_lessons].present?
+        @invoice.update_line_items(Lesson.joins(:line_items)
+          .where('line_items.paid = ? and (line_items.invoice_id IS NULL or line_items.invoice_id = ?)', false, @invoice.id)
+          .distinct.map(&:id))
+      end
+
+      @invoice.generate_pdf if @invoice.sending_date.nil?
       @invoice.set_payment_date if @invoice.payment_status
       redirect_to admin_invoices_url, :notice => 'Facture modifiée avec succès.'
     else
@@ -68,9 +78,21 @@ class Admin::InvoicesController < Admin::AdminController
   end
 
   def update_lessons_select
-    @lessons = Student.find_by_id(params[:student_id]).lessons.joins(:line_items).where('line_items.paid = ? and line_items.invoice_id IS NULL', false).distinct
+    student = Student.find_by_id(params[:student_id])
+
+    if params[:invoice_id] != "undefined"
+      @invoice = Invoice.find(params[:invoice_id])
+    end
+
+    if @invoice.present? && @invoice.student_id == student.id
+      @lessons = student.lessons.joins(:line_items).where('line_items.paid = ? and (line_items.invoice_id IS NULL or line_items.invoice_id = ?)', false, @invoice.id).distinct
+      @selected_lessons = @invoice.lessons
+    else
+      @lessons = student.lessons.joins(:line_items).where('line_items.paid = ? and line_items.invoice_id IS NULL', false).distinct
+    end
+
     @products = Product.where('id IN(?)', @lessons.map(&:product_id))
-    render json: {lessons: @lessons, products: @products}
+    render json: {lessons: @lessons, products: @products, selected_lessons: (@selected_lessons if @selected_lessons.present?)}
   end
 
   def calculate_total_amount
