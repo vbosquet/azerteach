@@ -5,36 +5,47 @@
 
         <div class="form-group">
           <label>Numéro de facture : </label>
-          <%= f.text_field :numero, :class => "form-control", :required => 'required', :'data-bv-notempty-message' => "La numéro de facture obligatoire." %>
+          <%= f.text_field :numero, :class => "form-control", :required => 'required', :'data-bv-notempty-message' => "La numéro de facture obligatoire.", disabled: (true if @invoice.sending_date.present?) %>
         </div>
 
         <div class="form-group">
           <label>Elève :</label>
-          <%= f.select :student_id, Student.all.collect {|s| [s.name, s.id]}, {prompt: "Choisissez"}, {:class => "form-control select", :required => 'required', :'data-bv-notempty-message' => "Un élève est obligatoire.", id: 'student-select' } %>
+          <%= f.select :student_id, Student.all.collect {|s| [s.name, s.id]}, {prompt: "Choisissez"}, {:class => "form-control select", :required => 'required', :'data-bv-notempty-message' => "Un élève est obligatoire.", id: 'student-select', disabled: (true if @invoice.sending_date.present?) } %>
         </div>
 
         <div class="form-group">
           <label>Réservation(s) :</label>
-          <%= select_tag :lesson_ids, options_for_select(@lessons.collect {|l| ["#{l.product.name} - #{l.start_date.strftime("%d/%m/%Y")}", l.id]}), {:class => "form-control select", :required => 'required', :'data-bv-notempty-message' => "Une réservation est obligatoire.", :multiple => true, id: 'lessons-select' } %>
-          <div class="checkbox">
-            <label><%= check_box_tag 'all_lessons', 1, false, {id: "all-lessons-checkbox"} %>Toutes les réservations</label>
-          </div>
+          <% if @invoice.sending_date.present? %>
+            <%= select_tag :lesson_ids, options_for_select(@invoice.lessons.collect {|l| ["#{l.product.name} - #{l.start_date.strftime("%d/%m/%Y")}", l.id]}), {:class => "form-control select", :multiple => true, disabled: (true if @invoice.sending_date.present?)} %>
+          <% else %>
+            <div class="checkbox">
+              <%= select_tag :lesson_ids, options_for_select(@lessons.collect {|l| ["#{l.product.name} - #{l.start_date.strftime("%d/%m/%Y")}", l.id]}, (@selected_lessons.map(&:id) if @selected_lessons.present?)), {:class => "form-control select", :required => 'required', :'data-bv-notempty-message' => "Une réservation est obligatoire.", :multiple => true, id: 'lessons-select' } %>
+              <label><%= check_box_tag 'all_lessons', 1, false, {id: "all-lessons-checkbox"} %>Toutes les réservations</label>
+            </div>
+          <% end %>
         </div>
 
         <div class="form-group">
-          <label>Montant HTVA : </label>
-          <%= f.text_field :amount, :class => "form-control", :required => 'required', :'data-bv-notempty-message' => "Le montant HTVA est obligatoire.", id: 'amount-without-vat' %>
+          <label>Montant : </label>
+          <%= f.text_field :amount, :class => "form-control", :required => 'required', :'data-bv-notempty-message' => "Le montant HTVA est obligatoire.", id: 'amount-without-vat', disabled: (true if @invoice.sending_date.present?) %>
         </div>
 
-        <div class="form-group">
+        <!--<div class="form-group">
           <label>TVA : </label>
-          <%= f.select :vat, [["21%", 21], ["17%", 17], ["6%", 6]], {prompt: "Choisissez"}, {:class => "form-control", :required => 'required', :'data-bv-notempty-message' => "La TVA est obligatoire.", id: 'vat-select'} %>
-        </div>
+          <%= f.select :vat, [["21%", 21], ["17%", 17], ["6%", 6]], {prompt: "Choisissez"}, {:class => "form-control", :required => 'required', :'data-bv-notempty-message' => "La TVA est obligatoire.", id: 'vat-select', disabled: (true if @invoice.sending_date.present?)} %>
+        </div>-->
 
-        <div class="form-group">
+        <!--<div class="form-group">
           <label>Montant TVAC : </label>
-          <%= f.text_field :amount_with_vat, :class => "form-control", :required => 'required', :'data-bv-notempty-message' => "Le montant TVAC est obligatoire.", id: 'amount-with-vat' %>
-        </div>
+          <%= f.text_field :amount_with_vat, :class => "form-control", :required => 'required', :'data-bv-notempty-message' => "Le montant TVAC est obligatoire.", id: 'amount-with-vat', disabled: (true if @invoice.sending_date.present?) %>
+        </div>-->
+
+        <% if @invoice.sending_date.present? %>
+          <div class="form-group">
+            <label>Statut du payement :</label>
+            <%= f.select :payment_status, [["Impayé", false], ["Payé", true]], {selected: (f.object.payment_status if f.object.present?)}, {:class => "form-control select" } %>
+          </div>
+        <% end %>
 	  
 			  <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer</button>
   		</div><!-- /.the-box -->

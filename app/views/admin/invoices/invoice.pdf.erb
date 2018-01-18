@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <%= wicked_pdf_stylesheet_link_tag 'sentir' -%>
+</head>
+<body>
+  <header>
+    <div class="row">
+      <div class="col-sm-6">
+        <h1>Azerteach asbl</h1>
+        <p>Avenue Winston Churchill, 67<br />
+          1180 Bruxelles<br />
+          02 345 48 37<br />
+          hello@azerteach.com<br />
+        </p>
+        <p>N° d'entreprise : BE 0564.931.166</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <p><%= invoice.student.name %><br />
+          <%= invoice.student.address_line_1 %><br />
+          <%= invoice.student.address_line_2 %><br />
+        </p>
+        <% if invoice.sending_date.present? %>
+          <p>Bruxelles, le <%= invoice.sending_date.strftime("%d/%m/%Y") %></p>
+        <% else %>
+          <p>Bruxelles, le <%= invoice.updated_at.strftime("%d/%m/%Y") %></p>
+        <% end %>
+      </div>
+    </div>
+  </header>
+  <main>
+    <h1>Facture n° <%= invoice.numero %></h1>
+    <table class="table table-striped table-hover datatable" id="lessons-datatable">
+    <thead class="the-box dark full">
+    <tr>
+      <th style="width:200px">Type de cours</th>
+      <th style="width:200px">Date</th>
+      <th style="width:200px">Durée (h)</th>
+      <th style="width:200px">Prix (€)</th>
+    </tr>
+    </thead>
+    <tbody id="lessons_data">
+    <% invoice.lessons.each do |lesson| %>
+      <tr id="lesson_<%= lesson.id %>">
+        <td><%= lesson.product.name if lesson.product.present? %></td>
+        <td><%= lesson.start_date.strftime("%d/%m/%Y") if lesson.start_date.present? %></td>
+        <td><%= lesson.duration if lesson.start_date.present? && lesson.end_date.present? %></td>
+        <td><%= lesson.total_price  %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <td></td>
+      <td></td>
+      <td><strong>Total</strong></td>
+      <td><%= invoice.amount %></td>
+    </tr>
+    </tbody>
+    </table>
+  </main>
+  <footer>
+    <p>Payable dès réception par virement bancaire (BE40 7380 4115 1563 – BIC KREDBEBB) avec la mention de l’élève et du numéro de facture.</p>
+  </footer>
+</body>
+</html>

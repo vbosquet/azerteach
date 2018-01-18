@@ -22,19 +22,13 @@
 
         <div class="form-group">
           <label>Elève :</label>
-          <%= f.select :student_id, Student.all.collect {|s| [s.name, s.id]}, {prompt: "Choisissez"}, {:class => "form-control select", :required => 'required', :'data-bv-notempty-message' => "Un élève est obligatoire." } %>
+          <%= f.select :student_ids, Student.all.collect {|s| [s.name, s.id]}, {}, {:class => "form-control select", :required => 'required', :'data-bv-notempty-message' => "Un élève est obligatoire.", :multiple => true } %>
         </div>
 
         <div class="form-group">
           <label>Professeur :</label>
           <%= f.select :teacher_id, Teacher.all.collect {|t| [t.name, t.id]}, {prompt: "Choisissez"}, {:class => "form-control select", :required => 'required', :'data-bv-notempty-message' => "Un professeur est obligatoire." } %>
         </div>
-
-        <div class="form-group">
-          <label>Statut du payement :</label>
-          <%= f.select :paid, [["Impayé", false], ["Payé", true]], {selected: (f.object.paid if f.object.present?)}, {:class => "form-control select" } %>
-        </div>
-        
 	  
 			  <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer</button>
   		</div><!-- /.the-box -->

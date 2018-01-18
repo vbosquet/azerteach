@@ -20,13 +20,12 @@
 			<thead class="the-box dark full">
 				<tr>
           <th style="width:200px">Actions</th>
-          <th style="width:200px">Numéro</th>
-          <th style="width:200px">Montant HTVA</th>
-          <th style="width:200px">TVA</th>
-          <th style="width:200px">Montant TVAC</th>
-          <th style="width:200px">Date d'envoi</th>
-          <th style="width:200px">Elève</th>
-          <th style="width:200px">Statut du payement</th>
+          <th>Numéro</th>
+          <th>Montant Total</th>
+          <th>Elève</th>
+          <th>Date d'envoi</th>
+          <th>Date du payement</th>
+          <th>PDF</th>
                   </tr>
 			</thead>
 			<tbody id="invoices_data">
@@ -34,15 +33,17 @@
           <tr id="invoices_<%= invoice.id %>">
             <td>
               <a class="btn btn-info" href="<%= edit_admin_invoice_path(invoice) %>"><i class="fa fa-pencil"></i> Modifier</a>
-              <a class="btn btn-danger delete-record" data-id="<%= invoice.id %>" data-type="invoices"><i class="fa fa-trash-o"></i> Supprimer</a>
+              <% if invoice.sending_date.nil? %>
+                <a class="btn btn-primary" href="<%=  admin_send_invoice_path(invoice) %>"><i class="fa fa-envelope-o"></i> Envoyer</a>
+                <a class="btn btn-danger delete-record" data-id="<%= invoice.id %>" data-type="invoices"><i class="fa fa-trash-o"></i> Supprimer</a>
+              <% end %>
             </td>
             <td><%= invoice.numero %></td>
             <td><%= invoice.amount %></td>
-            <td><%= invoice.vat %></td>
-            <td><%= invoice.amount_with_vat %></td>
-            <td><%= invoice.sending_date %></td>
             <td><%= invoice.student.name if invoice.student.present? %></td>
-            <td><%= invoice.payment_status? ? "Payé" : "Impayé" %></td>
+            <td><%= invoice.sending_date.nil? ? "Non encore envoyée" : "Envoyée le #{invoice.sending_date.strftime('%d/%m/%Y')}" %></td>
+            <td><%= invoice.payment_date.nil? ? "Non encore payée" : "Payée le #{invoice.sending_date.strftime('%d/%m/%Y')}" %></td>
+            <td><%= link_to "Visualiser la facture", admin_invoice_path(invoice, format: 'pdf'), target: '_blank' %></td>
             
           </tr>
         <% end %>

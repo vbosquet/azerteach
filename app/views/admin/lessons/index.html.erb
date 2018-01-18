@@ -21,12 +21,11 @@
 				<tr>
           <th style="width:200px">Actions</th>
           <th style="width:50px">ID</th>
-          <th style="width:200px">Début du cours</th>
-          <th style="width:200px">Fin du cours</th>
-          <th style="width:200px">Type de cours</th>
-          <th style="width:200px">Elève</th>
-          <th style="width:200px">Professeur</th>
-          <th style="width:200px">Statut du payement</th>
+          <th>Début du cours</th>
+          <th>Fin du cours</th>
+          <th>Type de cours</th>
+          <th>Professeur</th>
+          <th>Elève(s)</th>
                   </tr>
 			</thead>
 			<tbody id="lessons_data">
@@ -40,9 +39,8 @@
             <td><%= lesson.start_date.strftime("%d/%m/%Y %H:%M") if lesson.start_date.present? %></td>
             <td><%= lesson.end_date.strftime("%d/%m/%Y %H:%M") if lesson.end_date.present? %></td>
             <td><%= lesson.product.name if lesson.product.present? %></td>
-            <td><%= lesson.student.name if lesson.student.present? %></td>
             <td><%= lesson.teacher.name if lesson.teacher.present? %></td>
-            <td><%= lesson.paid? ? "Payé" : "Impayé" %></td>
+            <td><%= lesson.students_name.join(', ') if lesson.students.present? %></td>
             
           </tr>
         <% end %>

@@ -11,6 +11,5 @@
  *= require plugins/toastr/toastr
  *= require sentir/style
  *= require sentir/style-responsive
- *= require bootstrap
  *= require bootstrap-datetimepicker
  */

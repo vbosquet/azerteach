@@ -13,5 +13,6 @@ Rails.application.routes.draw do
     resources :invoices
     get 'update_lessons_select' => "invoices#update_lessons_select"
     get 'calculate_total_amount' => "invoices#calculate_total_amount"
+    get 'send_invoice/:id' => "invoices#send_invoice", as: "send_invoice"
   end  
 end
