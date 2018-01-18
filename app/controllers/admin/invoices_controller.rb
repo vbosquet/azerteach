@@ -37,6 +37,7 @@ class Admin::InvoicesController < Admin::AdminController
       @invoice.generate_pdf
       redirect_to admin_invoices_url, :notice => 'Facture ajoutée avec succès.'
     else
+      flash[:error] = @invoice.errors.full_messages
       render 'new'
     end
   end

@@ -33,7 +33,9 @@
           <tr id="lessons_<%= lesson.id %>">
             <td>
               <a class="btn btn-info" href="<%= edit_admin_lesson_path(lesson) %>"><i class="fa fa-pencil"></i> Modifier</a>
-              <a class="btn btn-danger delete-record" data-id="<%= lesson.id %>" data-type="lessons"><i class="fa fa-trash-o"></i> Supprimer</a>
+              <% if lesson.invoices.empty? %>
+                <a class="btn btn-danger delete-record" data-id="<%= lesson.id %>" data-type="lessons"><i class="fa fa-trash-o"></i> Supprimer</a>
+              <% end %>
             </td>
             <td><%= lesson.id %></td>
             <td><%= lesson.start_date.strftime("%d/%m/%Y %H:%M") if lesson.start_date.present? %></td>

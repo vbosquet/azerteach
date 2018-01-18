@@ -21,8 +21,12 @@
 				<tr>
           <th style="width:200px">Actions</th>
           <th style="width:50px">ID</th>
-          <th style="width:200px">Prénom</th>
-          <th style="width:200px">Nom</th>
+          <th>Prénom</th>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Téléphone</th>
+          <th>Adresse ligne 1</th>
+          <th>Adresse ligne 2</th>
                   </tr>
 			</thead>
 			<tbody id="teachers_data">
@@ -35,6 +39,10 @@
             <td><%= teacher.id %></td>
             <td><%= teacher.firstname %></td>
             <td><%= teacher.lastname %></td>
+            <td><%= teacher.email %></td>
+            <td><%= teacher.phone_number %></td>
+            <td><%= teacher.address_line_1 %></td>
+            <td><%= teacher.address_line_2 %></td>
             
           </tr>
         <% end %>

@@ -7,27 +7,27 @@
           <label>Période :</label>
           <div class="row">
             <div class="col-sm-6">
-              <%= f.text_field :start_date, value: (f.object.start_date.strftime("%d/%m/%Y %H:%M") if f.object.start_date.present?), class: "form-control", placeholder: "Début du cours", :required => 'required', :'data-bv-notempty-message' => "Une date et heure de début est obligatoire", id: "start-date" %>
+              <%= f.text_field :start_date, value: (f.object.start_date.strftime("%d/%m/%Y %H:%M") if f.object.start_date.present?), class: "form-control", placeholder: "Début du cours", :required => 'required', :'data-bv-notempty-message' => "Une date et heure de début est obligatoire", id: "start-date", disabled: (true if @lesson.invoices.present?) %>
             </div>
             <div class="col-sm-6">
-              <%= f.text_field :end_date, value: (f.object.end_date.strftime("%d/%m/%Y %H:%M") if f.object.end_date.present?), class: "form-control", placeholder: "Fin du cours", :required => 'required', :'data-bv-notempty-message' => "Une date et heure de fin est obligatoire", id: "end-date" %>
+              <%= f.text_field :end_date, value: (f.object.end_date.strftime("%d/%m/%Y %H:%M") if f.object.end_date.present?), class: "form-control", placeholder: "Fin du cours", :required => 'required', :'data-bv-notempty-message' => "Une date et heure de fin est obligatoire", id: "end-date", disabled: (true if @lesson.invoices.present?) %>
             </div>
           </div>
         </div>
 
         <div class="form-group">
           <label>Type de cours :</label>
-          <%= f.select :product_id, Product.all.collect {|p| [p.name, p.id]}, {prompt: "Choisissez"}, {:class => "form-control select", :required => 'required', :'data-bv-notempty-message' => "Un type de cours est obligatoire." } %>
+          <%= f.select :product_id, Product.all.collect {|p| [p.name, p.id]}, {prompt: "Choisissez"}, {:class => "form-control chosen-select", :required => 'required', :'data-bv-notempty-message' => "Un type de cours est obligatoire.", disabled: (true if @lesson.invoices.present?) } %>
         </div>
 
         <div class="form-group">
-          <label>Elève :</label>
-          <%= f.select :student_ids, Student.all.collect {|s| [s.name, s.id]}, {}, {:class => "form-control select", :required => 'required', :'data-bv-notempty-message' => "Un élève est obligatoire.", :multiple => true } %>
+          <label>Elève(s) :</label>
+          <%= f.select :student_ids, Student.all.collect {|s| [s.name, s.id]}, {}, {:class => "form-control chosen-select", :required => 'required', :'data-bv-notempty-message' => "Un élève est obligatoire.", multiple: true} %>
         </div>
 
         <div class="form-group">
           <label>Professeur :</label>
-          <%= f.select :teacher_id, Teacher.all.collect {|t| [t.name, t.id]}, {prompt: "Choisissez"}, {:class => "form-control select", :required => 'required', :'data-bv-notempty-message' => "Un professeur est obligatoire." } %>
+          <%= f.select :teacher_id, Teacher.all.collect {|t| [t.name, t.id]}, {prompt: "Choisissez"}, {:class => "form-control chosen-select", :required => 'required', :'data-bv-notempty-message' => "Un professeur est obligatoire." } %>
         </div>
 	  
 			  <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer</button>
