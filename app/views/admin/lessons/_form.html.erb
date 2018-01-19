@@ -22,12 +22,12 @@
 
         <div class="form-group">
           <label>Elève(s) :</label>
-          <%= f.select :student_ids, Student.all.collect {|s| [s.name, s.id]}, {}, {:class => "form-control chosen-select", :required => 'required', :'data-bv-notempty-message' => "Un élève est obligatoire.", multiple: true} %>
+          <%= f.select :student_ids, Student.all.collect {|s| [s.name, s.id]}, {}, {:class => "form-control chosen-select", :required => 'required', :'data-bv-notempty-message' => "Un élève est obligatoire.", multiple: true, data: {placeholder: 'Choisissez'}} %>
         </div>
 
         <div class="form-group">
           <label>Professeur :</label>
-          <%= f.select :teacher_id, Teacher.all.collect {|t| [t.name, t.id]}, {prompt: "Choisissez"}, {:class => "form-control chosen-select", :required => 'required', :'data-bv-notempty-message' => "Un professeur est obligatoire." } %>
+          <%= f.select :teacher_id, Teacher.all.collect {|t| [t.name, t.id]}, {prompt: "Choisissez"}, {:class => "form-control chosen-select" } %>
         </div>
 	  
 			  <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer</button>

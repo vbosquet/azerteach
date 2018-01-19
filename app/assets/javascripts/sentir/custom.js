@@ -31,14 +31,13 @@ $(document).ready(function() {
       var invoiceId = $(this).data('invoice');
       $.ajax({
           type: 'GET',
-          url: '/admin/update_lessons_select',
-          dataType: "json",
+          url: '/admin/invoice/update_lessons_select',
+          dataType: 'json',
           data: {student_id: studentId, invoice_id: invoiceId},
           complete: function(result) {
               data = result.responseJSON;
 
-              $('#lessons-select').empty();
-              $("#lessons-select").prop("disabled", false);
+              $('#student-lessons-select').empty();
               $("#all-lessons-checkbox").prop("checked", false);
               $("#amount-without-vat").val(0.0);
               $("#vat-select").find($('option')).attr('selected', false);
@@ -63,7 +62,7 @@ $(document).ready(function() {
                         }
                       }
 
-                      $('#lessons-select').append(option + 'value="' + data.lessons[i].id + '">' + productName + ' - '
+                      $('#student-lessons-select').append(option + 'value="' + data.lessons[i].id + '">' + productName + ' - '
                           + moment(data.lessons[i].start_date).format("DD/MM/YYYY") + '</option>');
                   }
               }
@@ -71,10 +70,17 @@ $(document).ready(function() {
       });
   });
 
-  var calculateTotalAmount = function (lessonIds) {
-      $.ajax({
+  var calculateTotalAmount = function (lessonIds, action) {
+    var url = '';
+    if (action === 'student') {
+      url = '/admin/invoice/calculate_total_amount';
+    } else if (action === 'teacher') {
+      url = '/admin/expense_export/calculate_total_amount';
+    }
+
+    $.ajax({
           type: 'GET',
-          url: '/admin/calculate_total_amount',
+          url: url,
           dataType: "json",
           data: {lesson_ids: lessonIds},
           complete: function(result) {
@@ -94,31 +100,67 @@ $(document).ready(function() {
 
   $("#all-lessons-checkbox").on('change', function() {
       var lessonIds = [];
+      var action = $(this).data('action');
+
       if($(this).prop("checked")) {
-          $("#lessons-select").prop("disabled", true);
-          $("#lessons-select").find($('option')).attr('selected', false).each(function() {
+          $("#student-lessons-select, #teacher-lessons-select").find($('option')).each(function() {
+              $(this).prop('selected', true);
               lessonIds.push($(this).val());
           });
-          calculateTotalAmount(lessonIds);
+
+          calculateTotalAmount(lessonIds, action);
           calculateAmountWithVat();
+
       } else {
-          $("#lessons-select").prop("disabled", false);
+          $("#student-lessons-select, #teacher-lessons-select").find($('option')).prop('selected', false)
           $("#amount-without-vat").val(0.0);
           $("#vat-select").find($('option')).attr('selected', false);
           $("#amount-with-vat").val(0.0);
       }
   });
 
-  $("#lessons-select").on('change', function () {
+  $("#student-lessons-select, #teacher-lessons-select").on('change', function () {
       var lessonIds = [];
-      $("#lessons-select").find($('option:selected')).each(function() {
+      var action = $('#all-lessons-checkbox').data('action');
+      $(this).find($('option:selected')).each(function() {
           lessonIds.push($(this).val());
       });
-      calculateTotalAmount(lessonIds);
+      calculateTotalAmount(lessonIds, action);
   });
 
   $("#vat-select").on('change', function () {
       calculateAmountWithVat();
+  });
+
+  $("#teacher-select").on('change', function () {
+    var teacherId = $(this).val();
+    var expenseExportId = $(this).data('expense-export');
+    $.ajax({
+          type: 'GET',
+          url: '/admin/expense_export/update_lessons_select',
+          dataType: 'json',
+          data: {teacher_id: teacherId, expense_export_id: expenseExportId},
+          complete: function(result) {
+              data = result.responseJSON;
+              $('#teacher-lessons-select').empty();
+              $("#all-lessons-checkbox").prop("checked", false);
+              $("#amount-without-vat").val(0.0);
+
+              if (typeof data !== 'undefined' && data.lessons.length > 0) {
+                  for(var i = 0; i < data.lessons.length; i++) {
+                      var productName = "";
+                      
+                      for(var j = 0; j < data.products.length; j++) {
+                          if (data.products[j].id === data.lessons[i].product_id) {
+                              productName = data.products[j].name;
+                          }
+                      }
+                      $('#teacher-lessons-select').append('<option value="' + data.lessons[i].id + '">' + productName + ' - '
+                          + moment(data.lessons[i].start_date).format("DD/MM/YYYY") + '</option>');
+                  }
+              }
+          }
+      });
   });
 
 });

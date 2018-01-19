@@ -1,5 +1,6 @@
 class Teacher < ApplicationRecord
   has_many :lessons
+  has_many :expense_exports
 
   def name
     [self.firstname, self.lastname].compact.join(' ')

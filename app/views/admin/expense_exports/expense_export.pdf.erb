@@ -19,20 +19,20 @@
     </div>
     <div class="row">
       <div class="col-sm-6">
-        <p><%= invoice.student.name %><br />
-          <%= invoice.student.address_line_1 %><br />
-          <%= invoice.student.address_line_2 %><br />
+        <p><%= expense_export.teacher.name %><br />
+          <%= expense_export.teacher.address_line_1 %><br />
+          <%= expense_export.teacher.address_line_2 %><br />
         </p>
-        <% if invoice.sending_date.present? %>
-          <p>Bruxelles, le <%= invoice.sending_date.strftime("%d/%m/%Y") %></p>
+        <% if expense_export.sending_date.present? %>
+          <p>Bruxelles, le <%= expense_export.sending_date.strftime("%d/%m/%Y") %></p>
         <% else %>
-          <p>Bruxelles, le <%= invoice.updated_at.strftime("%d/%m/%Y") %></p>
+          <p>Bruxelles, le <%= expense_export.updated_at.strftime("%d/%m/%Y") %></p>
         <% end %>
       </div>
     </div>
   </header>
   <main>
-    <h1>Facture n° <%= invoice.numero %></h1>
+    <h1>Note de frais n° <%= expense_export.numero %></h1>
     <table class="table table-striped table-hover datatable" id="lessons-datatable">
     <thead class="the-box dark full">
     <tr>
@@ -43,25 +43,24 @@
     </tr>
     </thead>
     <tbody id="lessons_data">
-    <% invoice.lessons.order("lessons.start_date ASC").each do |lesson| %>
+    <% expense_export.lessons.order("lessons.start_date ASC").each do |lesson| %>
       <tr id="lesson_<%= lesson.id %>">
         <td><%= lesson.product.name if lesson.product.present? %></td>
         <td><%= lesson.start_date.strftime("%d/%m/%Y") if lesson.start_date.present? %></td>
         <td><%= lesson.duration if lesson.start_date.present? && lesson.end_date.present? %></td>
-        <td><%= lesson.total_price  %></td>
+        <td><%= lesson.expenses  %></td>
       </tr>
     <% end %>
     <tr>
       <td></td>
       <td></td>
       <td><strong>Total</strong></td>
-      <td><%= invoice.amount %></td>
+      <td><%= expense_export.amount %></td>
     </tr>
     </tbody>
     </table>
   </main>
   <footer>
-    <p>Payable dès réception par virement bancaire (BE40 7380 4115 1563 – BIC KREDBEBB) avec la mention de l’élève et du numéro de facture.</p>
   </footer>
 </body>
 </html>

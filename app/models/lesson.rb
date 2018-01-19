@@ -1,10 +1,11 @@
 class Lesson < ApplicationRecord
-  belongs_to :teacher
+  belongs_to :teacher, optional: true
   belongs_to :product
   has_many :line_items
   has_many :students, through: :line_items
   has_many :line_items
   has_many :invoices, through: :line_items
+  belongs_to :expense_export, optional: true
 
   def total_price
     if self.product.package?
@@ -20,7 +21,11 @@ class Lesson < ApplicationRecord
   end
 
   def expenses
-    self.duration * 20 
+    if self.teacher.present?
+      return self.duration * 20 
+    else
+      return 0.0
+    end
   end
 
   def students_name

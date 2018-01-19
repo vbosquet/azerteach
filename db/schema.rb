@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180118140806) do
+ActiveRecord::Schema.define(version: 20180119152839) do
+
+  create_table "expense_exports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "numero"
+    t.float "amount", limit: 24
+    t.datetime "sending_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "teacher_id"
+    t.string "pdf_file_name"
+    t.string "pdf_content_type"
+    t.integer "pdf_file_size"
+    t.datetime "pdf_updated_at"
+  end
 
   create_table "invoices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "numero"
@@ -36,6 +49,7 @@ ActiveRecord::Schema.define(version: 20180118140806) do
     t.datetime "end_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "expense_export_id"
   end
 
   create_table "line_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

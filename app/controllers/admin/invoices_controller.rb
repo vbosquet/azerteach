@@ -82,12 +82,12 @@ class Admin::InvoicesController < Admin::AdminController
     student = Student.find_by_id(params[:student_id])
 
     if params[:invoice_id] != "undefined"
-      @invoice = Invoice.find(params[:invoice_id])
+      invoice = Invoice.find(params[:invoice_id])
     end
 
-    if @invoice.present? && @invoice.student_id == student.id
-      @lessons = student.lessons.joins(:line_items).where('line_items.paid = ? and (line_items.invoice_id IS NULL or line_items.invoice_id = ?)', false, @invoice.id).distinct
-      @selected_lessons = @invoice.lessons
+    if invoice.present? && invoice.student_id == student.id
+      @lessons = student.lessons.joins(:line_items).where('line_items.paid = ? and (line_items.invoice_id IS NULL or line_items.invoice_id = ?)', false, invoice.id).distinct
+      @selected_lessons = invoice.lessons
     else
       @lessons = student.lessons.joins(:line_items).where('line_items.paid = ? and line_items.invoice_id IS NULL', false).distinct
     end
@@ -100,14 +100,7 @@ class Admin::InvoicesController < Admin::AdminController
     @lessons = Lesson.where('id IN(?)', params[:lesson_ids])
     @total_amount = 0
     @lessons.each do |lesson|
-      duration = TimeDifference.between(lesson.start_date, lesson.end_date).in_hours
-      if lesson.product.package?
-        price = lesson.product.price
-      else
-        price = lesson.product.price * duration
-      end
-
-      @total_amount += price
+      @total_amount += lesson.total_price
     end
     render json: {total_amount: @total_amount}
   end

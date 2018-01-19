@@ -25,6 +25,7 @@
           <th>Fin du cours</th>
           <th>Type de cours</th>
           <th>Elève</th>
+          <th>Note de frais</th>
                   </tr>
 			</thead>
 			<tbody id="lessons_data">
@@ -38,6 +39,7 @@
             <td><%= lesson.end_date.strftime("%d/%m/%Y %H:%M") if lesson.end_date.present? %></td>
             <td><%= lesson.product.name if lesson.product.present? %></td>
             <td><%= lesson.students_name.join(', ') if lesson.students.present? %></td>
+            <td><%= lesson.expense_export.present? && lesson.expense_export.sending_date.present? ? "Envoyée le #{lesson.expense_export.sending_date.strftime('%d/%m/%Y')}" : "Non encore envoyée" %></td>
           </tr>
         <% end %>
 			</tbody>

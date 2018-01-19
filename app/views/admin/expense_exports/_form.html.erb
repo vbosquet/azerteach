@@ -1,0 +1,35 @@
+<%= form_for([:admin, @expense_export], :html => { :multipart => true, :class => "validatable_form", :'data-bv-message' => "This value is not valid", :'data-bv-feedbackicons-valid' => "glyphicon glyphicon-ok", :'data-bv-feedbackicons-invalid' => "glyphicon glyphicon-remove", :'data-bv-feedbackicons-validating' => "glyphicon glyphicon-refresh" }) do |f| %>
+  <div class="row">
+  	<div class="col-sm-6">
+  		<div class="the-box">
+
+        <div class="form-group">
+          <label>Numéro : </label>
+          <%= f.text_field :numero, :class => "form-control", :required => 'required', :'data-bv-notempty-message' => "Un numéro est obligatoire.", disabled: (true if @expense_export.sending_date.present?) %>
+        </div>
+
+        <div class="form-group">
+          <label>Professeur :</label>
+          <%= f.select :teacher_id, Teacher.all.collect {|t| [t.name, t.id]}, {prompt: "Choisissez"}, {:class => "form-control chosen-select", :required => 'required', :'data-bv-notempty-message' => "Un professeur est obligatoire.", id: "teacher-select", :'data-expense-export' => (@expense_export.persisted? ? @expense_export.id : "undefined"), disabled: (true if @expense_export.sending_date.present?) } %>
+        </div>
+
+        <div class="form-group">
+          <label>Réservations :</label>
+          <% if @expense_export.sending_date.present? %>
+            <%= f.select :lesson_ids, @expense_export.lessons.collect {|l| ["#{l.product.name} - #{l.start_date.strftime("%d/%m/%Y")}", l.id]}, {}, {class: "form-control chosen-select", multiple: true, disabled: (true if @expense_export.sending_date.present?)} %>
+          <% else %>
+            <%= f.select :lesson_ids, @lessons.collect {|l| ["#{l.product.name} - #{l.start_date.strftime("%d/%m/%Y")}", l.id]}, {}, {class: "form-control select", multiple: true, id: "teacher-lessons-select"} %>
+            <label><%= check_box_tag 'all_lessons', 1, false, {id: "all-lessons-checkbox", "data-action": "teacher"} %>Toutes les réservations</label>
+          <% end %>
+        </div>
+
+        <div class="form-group">
+          <label>Montant : </label>
+          <%= f.text_field :amount, :class => "form-control", :required => 'required', :'data-bv-notempty-message' => "Le montant est obligatoire.", id: 'amount-without-vat', disabled: (true if @expense_export.sending_date.present?) %>
+        </div>
+	  
+			  <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Enregistrer</button>
+  		</div><!-- /.the-box -->
+    </div>
+  </div>
+<% end %>
