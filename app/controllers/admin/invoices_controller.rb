@@ -8,17 +8,16 @@ class Admin::InvoicesController < Admin::AdminController
   
   def show
     @invoice = Invoice.find(params[:id])
-    respond_to do |format|
-      format.html
-      format.pdf do
-        render pdf: 'invoice.pdf', template: 'admin/invoices/invoice.pdf.erb', locals: {invoice: @invoice}
-      end
-    end
   end
   
   def new
     @invoice = Invoice.new
-    @lessons = Lesson.where('invoice_id IS NULL').order('invoice_date ASC')
+    if params[:student_id].present?
+      @student = Student.find_by_id(params[:student_id])
+      @lessons = @student.lessons.where('invoice_id IS NULL').order('invoice_date ASC')
+    else
+      @lessons = Lesson.where('invoice_id IS NULL').order('invoice_date ASC')
+    end
   end
   
   def create
@@ -104,7 +103,7 @@ class Admin::InvoicesController < Admin::AdminController
   def send_invoice
     @invoice = Invoice.find(params[:id])
     if @invoice.update_attributes(sending_date: Date.today)
-      #InvoiceMailer.send_invoice(@invoice).deliver
+      InvoiceMailer.send_invoice(@invoice).deliver
       flash[:notice] = 'Facture envoyée avec succès.'
     else
       flash[:error] = "Impossible d'envoyer la facture. Veuillez réessayer."

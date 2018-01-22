@@ -43,7 +43,7 @@
             <td><%= invoice.student.name if invoice.student.present? %></td>
             <td><%= invoice.sending_date.nil? ? "Non encore envoyée" : "Envoyée le #{invoice.sending_date.strftime('%d/%m/%Y')}" %></td>
             <td><%= invoice.payment_date.nil? ? "Non encore payée" : "Payée le #{invoice.sending_date.strftime('%d/%m/%Y')}" %></td>
-            <td><%= link_to "Visualiser la facture", admin_invoice_path(invoice, format: 'pdf'), target: '_blank' %></td>
+            <td><%= link_to "Visualiser la facture", invoice.pdf.url, target: '_blank' %></td>
             
           </tr>
         <% end %>

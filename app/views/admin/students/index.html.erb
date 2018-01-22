@@ -40,9 +40,9 @@
           <th>Prénom</th>
           <th>Nom</th>
           <th>Email</th>
-          <!--<th>Téléphone</th>-->
-          <!--<th>Adresse ligne 1</th>-->
-          <!--<th>Adresse ligne 2</th>-->
+          <th>Cours réservés</th>
+          <th>Cours impayés</th>
+          <th>Cours facturés</th>
                   </tr>
 			</thead>
 			<tbody id="students_data">
@@ -56,9 +56,9 @@
             <td><%= student.firstname %></td>
             <td><%= student.lastname %></td>
             <td><%= student.email %></td>
-            <!--<td><%= student.phone_number %></td>-->
-            <!--<td><%= student.address_line_1 %></td>-->
-            <!--<td><%= student.address_line_2 %></td>-->
+            <td><%= student.lessons.count %></td>
+            <td><%= student.lessons.where("lessons.invoice_status != ?", 1).count %></td>
+            <td><%= student.lessons.where("lessons.invoice_id IS NOT NULL").count %></td>
             
           </tr>
         <% end %>

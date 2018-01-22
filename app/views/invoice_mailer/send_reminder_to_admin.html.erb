@@ -1,0 +1,14 @@
+<p>Bonjour <%= @admin.name %>,</p>
+<% if @unpaids_with_invoice.present? %>
+	<p>Voici la liste des cours facturés il y a 15 jours qui n'ont toujours pas été payés.</p>
+	<ul><% @unpaids_with_invoice.each do |lesson| %>
+		<li><%= lesson.sold_item %> - <%= lesson.invoice_date %></p></li>
+	<% end %></ul>
+<% end %>
+<% if @unpaids_with_no_invoice.present? %>
+	<p>Voici la liste des cours réservés il y a 15 jours qui n'ont toujours pas été facturés.</p>
+	<ul><% @unpaids_with_no_invoice.each do |lesson| %>
+		<li><%= lesson.sold_item %> - <%= lesson.invoice_date %></p></li>
+	<% end %></ul>
+<% end %>
+

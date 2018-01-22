@@ -10,7 +10,7 @@
 
         <div class="form-group">
           <label>Elève :</label>
-          <%= f.select :student_id, Student.all.collect {|s| [s.name, s.id]}, {prompt: "Choisissez"}, {:class => "form-control chosen-select", :required => 'required', :'data-bv-notempty-message' => "Un élève est obligatoire.", id: 'student-select', disabled: (true if @invoice.sending_date.present?), :'data-invoice' => (@invoice.persisted? ? @invoice.id : "undefined") } %>
+          <%= f.select :student_id, options_for_select(Student.all.collect {|s| [s.name, s.id]}, (@student.id if @student.present?)), {prompt: "Choisissez"}, {:class => "form-control chosen-select", :required => 'required', :'data-bv-notempty-message' => "Un élève est obligatoire.", id: 'student-select', disabled: (true if @invoice.sending_date.present?), :'data-invoice' => (@invoice.persisted? ? @invoice.id : "undefined") } %>
         </div>
 
         <div class="form-group">
