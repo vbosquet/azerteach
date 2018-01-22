@@ -36,4 +36,15 @@ class Lesson < ApplicationRecord
     return names
   end
 
+  def check_invoice_presence_before_update(new_student_ids)
+    student_ids = self.invoices.map(&:student_id)
+    not_included = []
+    student_ids.each do |id|
+      if !new_student_ids.include?(id.to_s)
+        not_included.push(id)
+      end
+    end
+    return not_included
+  end
+
 end

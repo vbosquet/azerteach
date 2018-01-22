@@ -29,6 +29,13 @@ class Admin::LessonsController < Admin::AdminController
   
   def update
     @lesson = Lesson.find(params[:id])
+    not_included = @lesson.check_invoice_presence_before_update(params[:lesson][:student_ids])
+
+    unless not_included.empty?
+      flash[:error] = "Vous ne pouvez pas retirez les utilisateurs suivants : #{Student.where('id IN (?)', not_included).map {|s| s.name}.join(', ')}"
+      render "edit"
+    end and return
+
     if @lesson.update_attributes(lesson_params)
       redirect_to admin_lessons_url, :notice => "Réservation modifiée avec succès."
     else
