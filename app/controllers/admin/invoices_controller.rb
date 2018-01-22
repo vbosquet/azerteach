@@ -18,20 +18,17 @@ class Admin::InvoicesController < Admin::AdminController
   
   def new
     @invoice = Invoice.new
-    @lessons = Lesson.joins(:line_items).where('line_items.paid = ? and line_items.invoice_id IS NULL', false).distinct
+    @lessons = Lesson.where('invoice_id IS NULL').order('invoice_date ASC')
   end
   
   def create
     @invoice = Invoice.new(invoice_params)
-    @lessons = Lesson.joins(:students, :line_items).where('line_items.paid = ? and line_items.invoice_id IS NULL and students.id = ?', false, params[:invoice][:student_id]).distinct
-    if params[:lesson_ids].present?
-      @lessons = @lessons.where('lessons.id IN (?)', params[:lesson_ids])
-    end
     if @invoice.save
-      @lessons.each do |lesson|
-        line_item = LineItem.find_by(lesson_id: lesson.id, student_id: params[:invoice][:student_id])
-        if line_item.present?
-          line_item.update_attributes(invoice_id:  @invoice.id)
+
+      if params[:all_lessons].present?
+        @invoice.lessons.each do |lesson|
+          lesson.invoice_id = @invoice.id
+          lesson.save
         end
       end
       @invoice.generate_pdf
@@ -44,20 +41,19 @@ class Admin::InvoicesController < Admin::AdminController
   
   def edit
     @invoice = Invoice.find(params[:id])
-    @lessons = Lesson.joins(:line_items).where('line_items.paid = ? and (line_items.invoice_id IS NULL or line_items.invoice_id = ?)', false, @invoice.id).distinct
-    @selected_lessons = @invoice.lessons
+    @lessons = Lesson.where('student_id = ? and invoice_id IS NULL or invoice_id = ?', @invoice.student_id, @invoice.id).order('invoice_date ASC')
+    @selected_lessons = @invoice.lessons.order('invoice_date ASC')
   end
   
   def update
     @invoice = Invoice.find(params[:id])
     if @invoice.update_attributes(invoice_params)
 
-      if params[:lesson_ids].present?
-        @invoice.update_line_items(params[:lesson_ids])
-      elsif params[:all_lessons].present?
-        @invoice.update_line_items(Lesson.joins(:line_items)
-          .where('line_items.paid = ? and (line_items.invoice_id IS NULL or line_items.invoice_id = ?)', false, @invoice.id)
-          .distinct.map(&:id))
+      if params[:all_lessons].present?
+        @invoice.lessons.each do |lesson|
+          lesson.invoice_id = @invoice.id
+          lesson.save
+        end
       end
 
       @invoice.generate_pdf if @invoice.sending_date.nil?
@@ -70,9 +66,9 @@ class Admin::InvoicesController < Admin::AdminController
   
   def destroy
     invoice = Invoice.find(params[:id])
-    invoice.line_items.each do |item|
-      item.invoice_id = nil
-      item.save
+    invoice.lessons.each do |lesson|
+      lesson.invoice_id = nil
+      lesson.save
     end
     invoice.destroy
     head :ok
@@ -86,21 +82,21 @@ class Admin::InvoicesController < Admin::AdminController
     end
 
     if invoice.present? && invoice.student_id == student.id
-      @lessons = student.lessons.joins(:line_items).where('line_items.paid = ? and (line_items.invoice_id IS NULL or line_items.invoice_id = ?)', false, invoice.id).distinct
-      @selected_lessons = invoice.lessons
+      @lessons = student.lessons.where('invoice_id IS NULL or invoice_id = ?', invoice.id).order('invoice_date ASC')
+      @selected_lessons = invoice.lessons.order('invoice_date ASC')
     else
-      @lessons = student.lessons.joins(:line_items).where('line_items.paid = ? and line_items.invoice_id IS NULL', false).distinct
+      @lessons = student.lessons.where('invoice_id IS NULL').order('invoice_date ASC')
     end
-
-    @products = Product.where('id IN(?)', @lessons.map(&:product_id))
-    render json: {lessons: @lessons, products: @products, selected_lessons: (@selected_lessons if @selected_lessons.present?)}
+    render json: {lessons: @lessons, selected_lessons: (@selected_lessons if @selected_lessons.present?)}
   end
 
   def calculate_total_amount
     @lessons = Lesson.where('id IN(?)', params[:lesson_ids])
     @total_amount = 0
     @lessons.each do |lesson|
-      @total_amount += lesson.total_price
+      if lesson.invoice_status != 'paid'
+        @total_amount += (lesson.full_price - lesson.discount)
+      end
     end
     render json: {total_amount: @total_amount}
   end
@@ -108,7 +104,7 @@ class Admin::InvoicesController < Admin::AdminController
   def send_invoice
     @invoice = Invoice.find(params[:id])
     if @invoice.update_attributes(sending_date: Date.today)
-      InvoiceMailer.send_invoice(@invoice).deliver
+      #InvoiceMailer.send_invoice(@invoice).deliver
       flash[:notice] = 'Facture envoyée avec succès.'
     else
       flash[:error] = "Impossible d'envoyer la facture. Veuillez réessayer."

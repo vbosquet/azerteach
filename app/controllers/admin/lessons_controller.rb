@@ -48,6 +48,16 @@ class Admin::LessonsController < Admin::AdminController
     head :ok
   end
 
+  def import
+    if params[:file].present?
+      Lesson.import(params[:file])
+      flash[:notice] = "Réservations importées avec succès."
+    else
+      flash[:error] = "Vous n'avez sélectionner aucun fichier. Veuillez réessayer."
+    end
+    redirect_to admin_lessons_url
+  end
+
 private
 
   def lesson_params

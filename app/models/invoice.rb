@@ -1,7 +1,8 @@
 class Invoice < ApplicationRecord
   belongs_to :student
-  has_many :line_items
-  has_many :lessons, through: :line_items
+  has_many :lessons
+  #has_many :line_items
+  #has_many :lessons, through: :line_items
 
   has_attached_file :pdf
   validates_attachment_content_type :pdf, content_type: "application/pdf"
@@ -9,9 +10,9 @@ class Invoice < ApplicationRecord
   def set_payment_date
   	self.payment_date = Date.today
     self.save
-    self.line_items.each do |item|
-    	item.paid = true
-    	item.save
+    self.lessons.each do |lesson|
+      lesson.invoice_status = 'paid'
+      lesson.save
     end
   end
 
@@ -49,7 +50,6 @@ class Invoice < ApplicationRecord
       end
     elsif lesson_ids.size < new_lesson_ids.size # add line_items to invoive
       items = LineItem.where("lesson_id IN(?) and student_id = ?", new_lesson_ids, self.student_id)
-      Rails.logger.debug("ITEMS: #{items.inspect}")
       items.each do |item|
         item.invoice_id = self.id 
         item.save

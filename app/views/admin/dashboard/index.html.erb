@@ -15,18 +15,17 @@
                   </tr>
 			</thead>
 			<tbody id="students_data">
-        <% Student.joins(:line_items).where("line_items.paid = ?", false).distinct.each do |student| %>
+        <% Student.joins(:lessons).where("invoice_status != ?", 1).distinct.each do |student| %>
           <tr id="student_<%= student.id %>">
             <td>
               <a class="btn btn-info" href="<%= edit_admin_student_path(student) %>"><i class="fa fa-pencil"></i> Ouvrir l'élève</a>
             </td>
             <td><%= student.name %></td>
-            <td><%= student.lessons.joins(:line_items).where("line_items.paid = ?", false).distinct.count %></td>
-            <td><%= student.lessons.joins(:line_items).where("line_items.paid = ?", false).distinct.sum {|l| l.total_price} %></td>
+            <td><%= student.lessons.where("lessons.invoice_status != ?", 1).count %></td>
+            <td><%= student.lessons.where("lessons.invoice_status != ?", 1).sum {|l| l.full_price - l.discount} %></td>
           </tr>
         <% end %>
 			</tbody>
 		</table>
-	</div><!-- /.table-responsive -->
-</div><!-- /.the-box -->
-<!-- End static table -->
+	</div>
+</div>

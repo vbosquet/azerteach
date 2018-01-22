@@ -41,6 +41,16 @@ class Admin::StudentsController < Admin::AdminController
     head :ok
   end
 
+  def import
+    if params[:file].present?
+      Student.import(params[:file])
+      flash[:notice] = "Elèves imortés avec succès."
+    else
+      flash[:error] = "Vous n'avez sélectionner aucun fichier. Veuillez réessayer."
+    end
+    redirect_to admin_students_url
+  end
+
 private
 
   def student_params

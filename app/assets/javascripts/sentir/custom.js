@@ -22,8 +22,7 @@ $(document).ready(function() {
   	return false;
   });
 
-  $('#start-date, #end-date').datetimepicker({
-      locale: 'fr'
+  $('#start-date, #end-date').datepicker({
   });
 
   $('#student-select').on('change', function() {
@@ -46,13 +45,13 @@ $(document).ready(function() {
               if (typeof data !== 'undefined' && data.lessons.length > 0) {
                   for(var i = 0; i < data.lessons.length; i++) {
                       var option = '<option ';
-                      var productName = "";
+                      //var productName = "";
                       
-                      for(var j = 0; j < data.products.length; j++) {
+                      /*for(var j = 0; j < data.products.length; j++) {
                           if (data.products[j].id === data.lessons[i].product_id) {
                               productName = data.products[j].name;
                           }
-                      }
+                      }*/
 
                       if(data.selected_lessons != null) {
                         for(var j = 0; j < data.selected_lessons.length; j++) {
@@ -62,8 +61,8 @@ $(document).ready(function() {
                         }
                       }
 
-                      $('#student-lessons-select').append(option + 'value="' + data.lessons[i].id + '">' + productName + ' - '
-                          + moment(data.lessons[i].start_date).format("DD/MM/YYYY") + '</option>');
+                      $('#student-lessons-select').append(option + 'value="' + data.lessons[i].id + '">' + data.lessons[i].item_sold + ' - '
+                          + moment(data.lessons[i].invoice_date).format("DD/MM/YYYY") + '</option>');
                   }
               }
           }

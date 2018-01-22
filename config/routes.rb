@@ -6,10 +6,14 @@ Rails.application.routes.draw do
   namespace :admin do
     root to: 'dashboard#index'
     resources :users
-    resources :students
+    resources :students do
+      collection { post :import }
+    end
     resources :teachers
     resources :products
-    resources :lessons
+    resources :lessons do
+      collection { post :import }
+    end
     resources :invoices
     get 'invoice/update_lessons_select' => "invoices#update_lessons_select"
     get 'invoice/calculate_total_amount' => "invoices#calculate_total_amount"

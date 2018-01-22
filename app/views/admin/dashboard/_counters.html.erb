@@ -5,8 +5,8 @@
       <div class="tiles-inner text-center">
         <p>CHIFFRE D'AFFAIRE</p>
         <h1 class="bolded"><%= @turnover %></h1>
-      </div><!-- /.tiles-inner -->
-    </div><!-- /.the-box no-border -->
+      </div>
+    </div>
   </div>
   <div class="col-sm-3">
     <div class="the-box no-border bg-primary rounded tiles-information">
@@ -14,25 +14,25 @@
       <div class="tiles-inner text-center">
         <p>TOTAL IMPAYES</p>
         <h1 class="bolded"><%= @unpaids %></h1>
-      </div><!-- /.tiles-inner -->
-    </div><!-- /.the-box no-border -->
+      </div>
+    </div>
   </div>
-  <div class="col-sm-3">
+  <!--<div class="col-sm-3">
     <div class="the-box no-border bg-primary rounded tiles-information">
       <i class="fa fa-users icon-bg"></i>
       <div class="tiles-inner text-center">
         <p>TOTAL FRAIS</p>
         <h1 class="bolded"><%= @expenses %></h1>
-      </div><!-- /.tiles-inner -->
-    </div><!-- /.the-box no-border -->
-  </div>
+      </div>
+    </div>
+  </div>-->
   <div class="col-sm-3">
     <div class="the-box no-border bg-primary rounded tiles-information">
       <i class="fa fa-users icon-bg"></i>
       <div class="tiles-inner text-center">
         <p>TOTAL BENEFICES</p>
-        <h1 class="bolded"><%= @turnover - @expenses - @unpaids %></h1>
-      </div><!-- /.tiles-inner -->
-    </div><!-- /.the-box no-border -->
+        <h1 class="bolded"><%= @turnover - @unpaids %></h1>
+      </div>
+    </div>
   </div>
 </div>

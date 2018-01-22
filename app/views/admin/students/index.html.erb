@@ -9,9 +9,25 @@
 </ol>
 <!-- End breadcrumb -->
 
-<a class="btn btn-info btn-perspective" href="<%= new_admin_student_path %>"><i class="fa fa-plus"></i> Nouvel élève</a>
+<!--<a class="btn btn-info btn-perspective" href="<%= new_admin_student_path %>"><i class="fa fa-plus"></i> Nouvel élève</a>-->
 
 <!-- Begin static table -->
+<h4 class="small-title" style="margin-top: 30px">NOUVEAUX ELEVES</h4>
+
+<%= form_tag import_admin_students_path, multipart: true do %>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="the-box">
+        <div class="form-group">
+          <label>Importer des élèves à partir d'un fichier Excel</label>
+          <%= file_field_tag :file, class: "form-control" %>
+        </div>
+        <%= submit_tag "Enregistrer", class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+<% end %>
+
 <h4 class="small-title" style="margin-top: 30px">ELEVES</h4>
 
 <div class="the-box">
@@ -20,13 +36,13 @@
 			<thead class="the-box dark full">
 				<tr>
           <th style="width:200px">Actions</th>
-          <th style="width:50px">ID</th>
+          <th>Code</th>
           <th>Prénom</th>
           <th>Nom</th>
           <th>Email</th>
-          <th>Téléphone</th>
-          <th>Adresse ligne 1</th>
-          <th>Adresse ligne 2</th>
+          <!--<th>Téléphone</th>-->
+          <!--<th>Adresse ligne 1</th>-->
+          <!--<th>Adresse ligne 2</th>-->
                   </tr>
 			</thead>
 			<tbody id="students_data">
@@ -36,13 +52,13 @@
               <a class="btn btn-info" href="<%= edit_admin_student_path(student) %>"><i class="fa fa-pencil"></i> Modifier</a>
               <a class="btn btn-danger delete-record" data-id="<%= student.id %>" data-type="students"><i class="fa fa-trash-o"></i> Supprimer</a>
             </td>
-            <td><%= student.id %></td>
+            <td><%= student.code %></td>
             <td><%= student.firstname %></td>
             <td><%= student.lastname %></td>
             <td><%= student.email %></td>
-            <td><%= student.phone_number %></td>
-            <td><%= student.address_line_1 %></td>
-            <td><%= student.address_line_2 %></td>
+            <!--<td><%= student.phone_number %></td>-->
+            <!--<td><%= student.address_line_1 %></td>-->
+            <!--<td><%= student.address_line_2 %></td>-->
             
           </tr>
         <% end %>
