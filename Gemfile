@@ -1,5 +1,3 @@
-ruby "2.3.0"
-
 source 'https://rubygems.org'
 
 git_source(:github) do |repo_name|
@@ -10,8 +8,6 @@ end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails'
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
@@ -58,7 +54,6 @@ gem 'devise'
 gem 'paperclip'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'mysql2', '>= 0.3.18', '< 0.5'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
 gem 'time_difference'
@@ -67,3 +62,4 @@ gem 'wkhtmltopdf-binary'
 gem "roo", "~> 2.7.0"
 gem 'whenever', require: false
 gem 'rails_12factor', group: :production
+gem 'mysql2', '>= 0.3.18', '< 0.5'
