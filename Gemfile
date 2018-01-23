@@ -51,7 +51,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'devise'
-gem 'paperclip'
+gem 'paperclip', "~> 5.0.0"
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'momentjs-rails', '>= 2.9.0'
