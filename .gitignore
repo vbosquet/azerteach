@@ -12,3 +12,4 @@ public/system/*
 public/system/**/*
 .ruby-version
 .sass-cache/
+sendgrid.env

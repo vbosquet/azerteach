@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'no-reply@intotheweb.be'
+  default from: 'azerteach@gmail.com'
   layout 'mailer'
 end

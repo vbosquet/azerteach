@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.3.4'
+ruby '2.5.0'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -64,3 +64,4 @@ gem "roo", "~> 2.7.0"
 gem 'whenever', require: false
 gem 'rails_12factor', group: :production
 gem 'mysql2', '>= 0.3.18', '< 0.5'
+gem 'sendgrid-ruby'
