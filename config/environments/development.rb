@@ -53,12 +53,4 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-  config.action_mailer.smtp_settings = {
-      :address => "in.mailjet.com",
-      :enable_starttls_auto => true,
-      :port => 587,
-      :authentication => 'plain',
-      :user_name => "7a8301da96255412bf4e76fc1bf1b5be",
-      :password => "689c8321f5e70cda718db1c3cbe86b3a"
-    }
 end
