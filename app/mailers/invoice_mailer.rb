@@ -6,6 +6,7 @@ class InvoiceMailer < ApplicationMailer
 			content: open(@invoice.pdf.path).read
 		}
 		mail(:to => 'vivi_sander@hotmail.com', :subject => "Azerteach - nouvelle facture")
+		mail(:to => 'paulgilsonchun@hotmail.com', :subject => "Facture Azerteach - test envoi automatique")
 	end
 
 	def send_reminder_to_admin(admin, unpaids_with_invoice, unpaids_with_no_invoices)
