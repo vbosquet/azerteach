@@ -20,7 +20,7 @@ class ExpenseExport < ApplicationRecord
 			page_size: 'Letter',
 			javascript_delay: 6000
 			)
-		pdf_path = Rails.root.join('public/exports', "#{self.numero}.pdf")
+		pdf_path = Rails.root.join('public', "#{self.numero}.pdf")
 		File.open(pdf_path, 'wb') do |file|
 			file << doc_pdf
 		end
