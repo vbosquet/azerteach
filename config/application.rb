@@ -16,5 +16,14 @@ module Azerteach
     # -- all .rb files in that directory are automatically loaded.
     #
     config.time_zone = 'Brussels'
+    ActionMailer::Base.smtp_settings = {
+      :user_name => ENV['SENDGRID_USERNAME'],
+      :password => ENV['SENDGRID_PASSWORD'],
+      :domain => 'adminazerteach.herokuapp.com',
+      :address => 'smtp.sendgrid.net',
+      :port => 587,
+      :authentication => :plain,
+      :enable_starttls_auto => true
+    }
   end
 end
