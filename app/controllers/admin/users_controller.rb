@@ -29,13 +29,23 @@ class Admin::UsersController < Admin::AdminController
   
   def update
     @user = User.find(params[:id])
-    if (user_params[:password].blank? && @user.update_without_password(user_params)) || @user.update(user_params)
-      sign_in(@user, :bypass => true)
-      redirect_to admin_users_url, :notice => "Administrateur modifié avec succès."
+
+    if user_params[:password].blank?
+      if @user.update_without_password(user_params)
+        redirect_to admin_users_url, :notice => "Administrateur modifié avec succès."  
+      else
+        flash[:error] = @user.errors.full_messages
+        render 'edit'
+      end
     else
-      flash[:error] = @user.errors.full_messages
-      render 'edit'
-    end    
+      if @user.update(user_params)
+        bypass_sign_in(@user)
+        redirect_to admin_users_url, :notice => "Administrateur modifié avec succès."
+      else
+        flash[:error] = @user.errors.full_messages
+        render 'edit'
+      end
+    end 
   end
   
   def destroy
