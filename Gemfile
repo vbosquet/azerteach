@@ -53,6 +53,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'devise'
 gem 'paperclip', "~> 5.0.0"
+gem 'aws-sdk', '~> 2.3'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'momentjs-rails', '>= 2.9.0'
@@ -65,3 +66,4 @@ gem 'whenever', require: false
 gem 'rails_12factor', group: :production
 gem 'mysql2', '>= 0.3.18', '< 0.5'
 gem 'sendgrid-ruby'
+gem "figaro"

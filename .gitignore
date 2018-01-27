@@ -13,3 +13,6 @@ public/system/**/*
 .ruby-version
 .sass-cache/
 sendgrid.env
+
+# Ignore application configuration
+/config/application.yml
