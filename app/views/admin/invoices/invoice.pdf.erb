@@ -19,7 +19,7 @@
     </div>
     <div class="row">
       <div class="col-sm-6">
-        <p><%= invoice.student.name %><br />
+        <p><%= invoice.student.major ? invoice.student.name : invoice.student.parent_name %><br />
           <%= invoice.student.address_line_1 %><br />
           <%= invoice.student.address_line_2 %><br />
         </p>

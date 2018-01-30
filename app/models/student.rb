@@ -16,6 +16,24 @@ class Student < ApplicationRecord
     [self.firstname, self.lastname].compact.join(' ')
   end
 
+  def parent_name
+    [self.parent_firstname, self.parent_lastname].compact.join(' ')
+  end
+
+  def major
+    if self.birthdate.present?
+      now = Time.zone.now.to_date
+      time_diff = now.year - self.birthdate.year - ((now.month > self.birthdate.month || (now.month == self.birthdate.month && now.day >= self.birthdate.day)) ? 0 : 1)
+      if time_diff < 18
+        return false
+      else
+        return true
+      end
+    else
+      return true
+    end
+  end
+
   def self.import(file)
     spreadsheet = open_spreadsheet(file)
     header = spreadsheet.row(1)
