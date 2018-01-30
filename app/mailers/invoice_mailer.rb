@@ -3,7 +3,7 @@ class InvoiceMailer < ApplicationMailer
 		@invoice = invoice
 		attachments["#{@invoice.numero}.pdf"] = {
 			mime_type: 'application/pdf',
-			content: open(@invoice.pdf.path).read
+			content: open(@invoice.pdf.url).read
 		}
 		#mail(:to => 'vivi_sander@hotmail.com', :subject => "Azerteach - nouvelle facture")
 		mail(:to => 'paulgilsonchun@hotmail.com, vivi_sander@hotmail.com', :subject => "Facture Azerteach - test envoi automatique")
