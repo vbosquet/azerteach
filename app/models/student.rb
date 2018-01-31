@@ -22,8 +22,7 @@ class Student < ApplicationRecord
 
   def major
     if self.birthdate.present?
-      now = Time.zone.now.to_date
-      time_diff = now.year - self.birthdate.year - ((now.month > self.birthdate.month || (now.month == self.birthdate.month && now.day >= self.birthdate.day)) ? 0 : 1)
+      time_diff = TimeDifference.between(self.birthdate, Date.today).in_years
       if time_diff < 18
         return false
       else

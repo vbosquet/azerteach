@@ -1,9 +1,9 @@
 # coding: utf-8
 
 class Admin::LessonsController < Admin::AdminController
+  before_action :find_lessons, only: [:index]
   
   def index
-    @lessons = Lesson.all
   end
   
   def show
@@ -29,12 +29,12 @@ class Admin::LessonsController < Admin::AdminController
   
   def update
     @lesson = Lesson.find(params[:id])
-    not_included = @lesson.check_invoice_presence_before_update(params[:lesson][:student_ids])
+    #not_included = @lesson.check_invoice_presence_before_update(params[:lesson][:student_ids])
 
-    unless not_included.empty?
-      flash[:error] = "Vous ne pouvez pas retirez les utilisateurs suivants : #{Student.where('id IN (?)', not_included).map {|s| s.name}.join(', ')}"
-      render "edit"
-    end and return
+    #unless not_included.empty?
+      #flash[:error] = "Vous ne pouvez pas retirez les utilisateurs suivants : #{Student.where('id IN (?)', not_included).map {|s| s.name}.join(', ')}"
+      #render "edit"
+    #end and return
 
     if @lesson.update_attributes(lesson_params)
       redirect_to admin_lessons_url, :notice => "Réservation modifiée avec succès."
@@ -62,6 +62,12 @@ private
 
   def lesson_params
     params.require(:lesson).permit!
+  end
+
+  def find_lessons
+    @unpaid_lessons = Lesson.all.where("invoice_status != ?", 1).order('invoice_date ASC').select {|l| l.invoice.present? && l.invoice.sending_date.present? && TimeDifference.between(l.invoice.sending_date, Date.today).in_days > 30}
+    @billed_lessons = Lesson.all.order('invoice_date ASC').select {|l| l.invoice.present? && l.invoice.sending_date.present? && (TimeDifference.between(l.invoice.sending_date, Date.today).in_days <= 30 || l.invoice.payment_status)}
+    @billable_lessons = Lesson.all.where('invoice_id IS NULL or id IN (?)', Lesson.all.joins(:invoice).where('lessons.invoice_id IS NOT NULL and invoices.sending_date IS NULL').distinct.map(&:id)).order('invoice_date ASC').select {|l| TimeDifference.between(l.invoice_date, Date.today).in_days > 4}
   end
 
 end

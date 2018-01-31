@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180130113914) do
+ActiveRecord::Schema.define(version: 20180130151909) do
 
   create_table "expense_exports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "numero"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20180130113914) do
     t.string "pdf_content_type"
     t.integer "pdf_file_size"
     t.datetime "pdf_updated_at"
+    t.date "first_reminder_date"
   end
 
   create_table "lessons", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

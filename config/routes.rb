@@ -18,5 +18,7 @@ Rails.application.routes.draw do
     get 'invoice/update_lessons_select' => "invoices#update_lessons_select"
     get 'invoice/calculate_total_amount' => "invoices#calculate_total_amount"
     get 'send_invoice/:id' => "invoices#send_invoice", as: "send_invoice"
+    get 'generate_invoices' => "invoices#generate_multiple_invoices", as: "generate_invoices"
+    get 'send_invoices' => "invoices#send_multiple_invoices", as: "send_invoices"
   end  
 end

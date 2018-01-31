@@ -10,4 +10,17 @@
 </ol>
 <!-- End breadcrumb -->
 
+<% unless @lesson.invoice.present? %>
+	<a class="btn btn-info btn-perspective" href="<%= new_admin_invoice_path(student_id: @lesson.student.id) %>" style="margin-bottom: 30px"><i class="fa fa-plus"></i> Nouvelle facture</a>
+<% end %>
+
+<% if @lesson.invoice.present? &&  %>
+	<a class="btn btn-info btn-perspective" href="<%= edit_admin_invoice_path(@lesson.invoice) %>" style="margin-bottom: 30px"><i class="fa fa-pencil"></i> Modifier la facture</a>
+	<% if @lesson.invoice.sending_date.nil? %>
+		<a class="btn btn-primary btn-perspective" href="<%=  admin_send_invoice_path(@lesson.invoice.id) %>" style="margin-bottom: 30px"><i class="fa fa-envelope-o"></i> Envoyer la facture</a>
+	<% elsif @lesson.invoice.sending_date.present? && @lesson.invoice_status != "paid" %>
+		<a class="btn btn-primary btn-perspective" href="#" style="margin-bottom: 30px"><i class="fa fa-envelope-o"></i> Envoyer un rappel</a>
+	<% end %>
+<% end %>
+
 <%= render :partial => 'form' %>

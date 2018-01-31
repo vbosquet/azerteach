@@ -23,11 +23,7 @@
           <%= invoice.student.address_line_1 %><br />
           <%= invoice.student.address_line_2 %><br />
         </p>
-        <% if invoice.sending_date.present? %>
-          <p>Bruxelles, le <%= invoice.sending_date.strftime("%d/%m/%Y") %></p>
-        <% else %>
-          <p>Bruxelles, le <%= invoice.updated_at.strftime("%d/%m/%Y") %></p>
-        <% end %>
+        <p>Bruxelles, le <%= invoice.sending_date.present? ? invoice.sending_date.strftime("%d/%m/%Y") : invoice.updated_at.strftime("%d/%m/%Y")%></p>
       </div>
     </div>
   </header>
@@ -63,7 +59,7 @@
     </table>
   </main>
   <footer>
-    <p>Payable dès réception par virement bancaire (BE40 7380 4115 1563 – BIC KREDBEBB) avec la mention de l’élève et du numéro de facture.</p>
+    <p>Payable avant le <%= invoice.sending_date.present? ? (invoice.sending_date + 15.days).strftime("%d/%m/%Y") : (invoice.updated_at + 15.days).strftime("%d/%m/%Y") %> par virement bancaire (BE40 7380 4115 1563 – BIC KREDBEBB) avec la mention de l’élève et du numéro de facture.</p>
   </footer>
 </body>
 </html>
