@@ -9,10 +9,17 @@ class Admin::InvoicesController < Admin::AdminController
   
   def show
     @invoice = Invoice.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: 'invoice.pdf', template: 'admin/invoices/invoice.pdf.erb', locals: {invoice: @invoice}
+      end
+    end
   end
   
   def new
     @invoice = Invoice.new
+    @numero = increment_numero
     if params[:student_id].present?
       @student = Student.find_by_id(params[:student_id])
       @lessons = @student.lessons.where('invoice_id IS NULL').order('invoice_date ASC')
@@ -45,6 +52,7 @@ class Admin::InvoicesController < Admin::AdminController
     @student = @invoice.student
     @lessons = Lesson.where('student_id = ? and invoice_id IS NULL or invoice_id = ?', @invoice.student_id, @invoice.id).order('invoice_date ASC').select {|l| TimeDifference.between(l.invoice_date, Date.today).in_days > 4}
     @selected_lessons = @invoice.lessons.order('invoice_date ASC').select {|l| TimeDifference.between(l.invoice_date, Date.today).in_days > 4}
+    @numero = @invoice.numero
   end
   
   def update
@@ -120,8 +128,7 @@ class Admin::InvoicesController < Admin::AdminController
       lessons_by_student = @billable_lessons.select {|l| l.invoice.nil?}.group_by { |l| l.student }
       lessons_by_student.each do |student, lessons|
         invoice = Invoice.new
-        last_numero = Invoice.last.present? ? Invoice.last.numero.to_i : 1
-        invoice.numero =  last_numero + 1
+        invoice.numero =  increment_numero
         invoice.student_id = student.id
         invoice.amount = lessons.sum {|l| l.paid? ? 0 : l.full_price - l.discount}
         invoice.save
@@ -156,6 +163,12 @@ private
 
   def find_lessons
     @billable_lessons = Lesson.all.where('invoice_id IS NULL or id IN (?)', Lesson.all.joins(:invoice).where('lessons.invoice_id IS NOT NULL and invoices.sending_date IS NULL').distinct.map(&:id)).order('invoice_date ASC').select {|l| TimeDifference.between(l.invoice_date, Date.today).in_days > 4}
+  end
+
+  def increment_numero
+    last_numero = Invoice.last.present? ? Invoice.last.numero : "#{Time.zone.now.year}#{Time.zone.now.month}-0"
+    i = last_numero.index("-")
+    return "#{Time.zone.now.year}#{Time.zone.now.month}-#{last_numero[i+1..last_numero.size].to_i + 1}"
   end
 
 end
