@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-sm-3">
+    <div class="the-box no-border bg-primary rounded tiles-information" id="billable-lessons-button" data-table="billable-lessons">
+      <i class="fa fa-users icon-bg"></i>
+      <div class="tiles-inner text-center">
+        <p>COURS FACTURABLES</p>
+        <h1 class="bolded"><%= @billable_lessons.count %></h1>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <div class="the-box no-border bg-primary rounded tiles-information" id="billed-lessons-button" data-table="billed-lessons">
+      <i class="fa fa-users icon-bg"></i>
+      <div class="tiles-inner text-center">
+        <p>COURS FACTURES</p>
+        <h1 class="bolded"><%= @billed_lessons.count %></h1>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <div class="the-box no-border bg-primary rounded tiles-information" id="unpaid-lessons-button" data-table="unpaid-lessons">
+      <i class="fa fa-users icon-bg"></i>
+      <div class="tiles-inner text-center">
+        <p>COURS IMPAYES</p>
+        <h1 class="bolded"><%= @unpaid_lessons.count %></h1>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <div class="the-box no-border bg-primary rounded tiles-information" id="invoices-button" data-table="invoices">
+      <i class="fa fa-users icon-bg"></i>
+      <div class="tiles-inner text-center">
+        <p>HISTORIQUE DES FACTURES</p>
+        <h1 class="bolded"><%= @invoices.count %></h1>
+      </div>
+    </div>
+  </div>
+</div>

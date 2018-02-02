@@ -2,11 +2,11 @@
 
 class Admin::InvoicesController < Admin::AdminController
   before_action :find_lessons, only: [:index, :generate_multiple_invoices]
-  
+
   def index
     @invoices = Invoice.all
   end
-  
+
   def show
     @invoice = Invoice.find(params[:id])
     respond_to do |format|
@@ -16,7 +16,7 @@ class Admin::InvoicesController < Admin::AdminController
       end
     end
   end
-  
+
   def new
     @invoice = Invoice.new
     @numero = increment_numero
@@ -28,7 +28,7 @@ class Admin::InvoicesController < Admin::AdminController
     end
     @lessons = @lessons.select {|l| TimeDifference.between(l.invoice_date, Date.today).in_days > 4}
   end
-  
+
   def create
     @invoice = Invoice.new(invoice_params)
     if @invoice.save
@@ -46,7 +46,7 @@ class Admin::InvoicesController < Admin::AdminController
       render 'new'
     end
   end
-  
+
   def edit
     @invoice = Invoice.find(params[:id])
     @student = @invoice.student
@@ -54,7 +54,7 @@ class Admin::InvoicesController < Admin::AdminController
     @selected_lessons = @invoice.lessons.order('invoice_date ASC').select {|l| TimeDifference.between(l.invoice_date, Date.today).in_days > 4}
     @numero = @invoice.numero
   end
-  
+
   def update
     @invoice = Invoice.find(params[:id])
     if @invoice.update_attributes(invoice_params)
@@ -71,9 +71,9 @@ class Admin::InvoicesController < Admin::AdminController
       redirect_to admin_invoices_url, :notice => 'Facture modifiée avec succès.'
     else
       render 'edit'
-    end    
+    end
   end
-  
+
   def destroy
     invoice = Invoice.find(params[:id])
     invoice.lessons.each do |lesson|
@@ -97,7 +97,7 @@ class Admin::InvoicesController < Admin::AdminController
     else
       @lessons = student.lessons.where('invoice_id IS NULL').order('invoice_date ASC')
     end
-    render json: {lessons: @lessons.select {|l| TimeDifference.between(l.invoice_date, Date.today).in_days > 4}, 
+    render json: {lessons: @lessons.select {|l| TimeDifference.between(l.invoice_date, Date.today).in_days > 4},
     selected_lessons: (@selected_lessons.select {|l| TimeDifference.between(l.invoice_date, Date.today).in_days > 4} if @selected_lessons.present?)}
   end
 
@@ -124,35 +124,47 @@ class Admin::InvoicesController < Admin::AdminController
   end
 
   def generate_multiple_invoices
-    if @billable_lessons.select {|l| l.invoice.nil?}.present?
-      lessons_by_student = @billable_lessons.select {|l| l.invoice.nil?}.group_by { |l| l.student }
-      lessons_by_student.each do |student, lessons|
-        invoice = Invoice.new
-        invoice.numero =  increment_numero
-        invoice.student_id = student.id
-        invoice.amount = lessons.sum {|l| l.paid? ? 0 : l.full_price - l.discount}
-        invoice.save
-        lessons.each do |lesson|
-          lesson.invoice_id = invoice.id
-          lesson.save
+    if params[:billable_lessons_ids].present?
+      billable_lessons = Lesson.where("id IN (?)", params[:billable_lessons_ids])
+      if billable_lessons.select {|l| l.invoice.nil?}.present?
+        lessons_by_student = billable_lessons.select {|l| l.invoice.nil?}.group_by { |l| l.student }
+        lessons_by_student.each do |student, lessons|
+          invoice = Invoice.create(numero: increment_numero, student_id: student.id,
+            amount: lessons.sum {|l| l.paid? ? 0 : l.full_price - l.discount})
+          lessons.each do |lesson|
+            lesson.invoice_id = invoice.id
+            lesson.save
+          end
+          invoice.generate_pdf
         end
-        invoice.generate_pdf
       end
     end
-    redirect_to admin_invoices_url
+
+    respond_to do |format|
+      format.json { head :ok }
+      format.js
+      format.html { redirect_to admin_invoices_url }
+    end
   end
 
   def send_multiple_invoices
-    @invoices = Invoice.all.where("sending_date IS NULL")
-    if @invoices.present? 
-      @invoices.all.each do |invoice|
-        if invoice.update_attributes(sending_date: Date.today)
-          InvoiceMailer.send_invoice(invoice).deliver
+    if params[:invoice_ids].present?
+      invoices = Invoice.where("id IN (?) and sending_date IS NULL", params[:invoice_ids])
+      if invoices.present?
+        invoices.all.each do |invoice|
+          if invoice.update_attributes(sending_date: Date.today)
+            InvoiceMailer.send_invoice(invoice).deliver
+          end
         end
       end
-      flash[:notice] = "Factures envoyées avec succès."
     end
-    redirect_to admin_invoices_url
+
+    respond_to do |format|
+      format.json { head :ok }
+      format.js
+      format.html { redirect_to admin_invoices_url }
+    end
+    
   end
 
 private
@@ -162,7 +174,9 @@ private
   end
 
   def find_lessons
-    @billable_lessons = Lesson.all.where('invoice_id IS NULL or id IN (?)', Lesson.all.joins(:invoice).where('lessons.invoice_id IS NOT NULL and invoices.sending_date IS NULL').distinct.map(&:id)).order('invoice_date ASC').select {|l| TimeDifference.between(l.invoice_date, Date.today).in_days > 4}
+    @unpaid_lessons = Lesson.all.where("invoice_status != ?", 1).order('invoice_date ASC').select {|l| l.invoice.present? && l.invoice.sending_date.present? && TimeDifference.between(l.invoice.sending_date, Date.today).in_days > 30}
+    @billed_lessons = Lesson.all.order('invoice_date ASC').select {|l| (l.invoice.present? && l.invoice.sending_date.nil?) || (l.invoice.present? && l.invoice.sending_date.present? && (TimeDifference.between(l.invoice.sending_date, Date.today).in_days <= 30 || l.invoice.payment_status))}
+    @billable_lessons = Lesson.all.where('invoice_id IS NULL').order('invoice_date ASC').select {|l| TimeDifference.between(l.invoice_date, Date.today).in_days > 4}
   end
 
   def increment_numero

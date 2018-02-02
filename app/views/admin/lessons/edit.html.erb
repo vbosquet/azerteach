@@ -1,16 +1,12 @@
-<!-- Begin page heading -->
 <h1 class="page-heading">Modifier</h1>
-<!-- End page heading -->
 
-<!-- Begin breadcrumb -->
 <ol class="breadcrumb default square rsaquo sm">
 	<li><a href="/admin"><i class="fa fa-home"></i></a></li>
 	<li><a href="/admin/lessons">Réservations</a></li>
 	<li class="active">Modifier</li>
 </ol>
-<!-- End breadcrumb -->
 
-<% unless @lesson.invoice.present? %>
+<!--<% unless @lesson.invoice.present? %>
 	<a class="btn btn-info btn-perspective" href="<%= new_admin_invoice_path(student_id: @lesson.student.id) %>" style="margin-bottom: 30px"><i class="fa fa-plus"></i> Nouvelle facture</a>
 <% end %>
 
@@ -21,6 +17,6 @@
 	<% elsif @lesson.invoice.sending_date.present? && @lesson.invoice_status != "paid" %>
 		<a class="btn btn-primary btn-perspective" href="#" style="margin-bottom: 30px"><i class="fa fa-envelope-o"></i> Envoyer un rappel</a>
 	<% end %>
-<% end %>
+<% end %>-->
 
 <%= render :partial => 'form' %>

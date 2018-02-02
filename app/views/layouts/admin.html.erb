@@ -6,21 +6,21 @@
 		<title>Admin</title>
     <%= stylesheet_link_tag 'sentir' %>
     <%= javascript_include_tag 'sentir' %>
-    
+
     <%= csrf_meta_tags %>
- 
+
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
 		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
 	</head>
- 
+
 	<body class="tooltips">
-	
-		
-		
-		
+
+
+
+
 		<!--
 		===========================================================
 		BEGIN PAGE
@@ -30,28 +30,28 @@
 			<!-- BEGIN TOP NAV -->
 			<div class="top-navbar">
 				<div class="top-navbar-inner">
-					
+
 					<!-- Begin Logo brand -->
 					<div class="logo-brand">
 						<a href="/admin"><%= image_tag 'sentir/logo.png' %></a>
 					</div><!-- /.logo-brand -->
 					<!-- End Logo brand -->
-					
+
 					<div class="top-nav-content">
-						
+
 						<!-- Begin button sidebar left toggle -->
 						<div class="btn-collapse-sidebar-left">
 							<i class="fa fa-bars"></i>
 						</div><!-- /.btn-collapse-sidebar-left -->
 						<!-- End button sidebar left toggle -->
-						
+
 						<!-- Begin button nav toggle -->
 						<div class="btn-collapse-nav" data-toggle="collapse" data-target="#main-fixed-nav">
 							<i class="fa fa-plus icon-plus"></i>
 						</div><!-- /.btn-collapse-sidebar-right -->
 						<!-- End button nav toggle -->
-						
-						
+
+
 						<!-- Begin user session nav -->
 						<ul class="nav-user navbar-right">
 							<li class="dropdown">
@@ -68,9 +68,9 @@
 				</div><!-- /.top-navbar-inner -->
 			</div><!-- /.top-navbar -->
 			<!-- END TOP NAV -->
-			
-			
-			
+
+
+
 			<!-- BEGIN SIDEBAR LEFT -->
 			<div class="sidebar-left sidebar-nicescroller">
 				<ul class="sidebar-menu">
@@ -119,36 +119,36 @@
 				</ul>
 			</div><!-- /.sidebar-left -->
 			<!-- END SIDEBAR LEFT -->
-			
-			
+
+
 			<!-- BEGIN PAGE CONTENT -->
 			<div class="page-content">
 				<div class="container-fluid">
           <%= flash_message(flash) %>
           <%= yield %>
 				</div><!-- /.container-fluid -->
-				
-				
+
+
 				<!-- BEGIN FOOTER -->
 				<footer>
 					&copy; 2017 <a href="https://www.azerteach.com/">Azerteach</a>
 				</footer>
 				<!-- END FOOTER -->
-				
-				
+
+
 			</div><!-- /.page-content -->
 		</div><!-- /.wrapper -->
 		<!-- END PAGE CONTENT -->
-		
-		
-	
+
+
+
 		<!-- BEGIN BACK TO TOP BUTTON -->
 		<div id="back-top">
 			<a href="#top"><i class="fa fa-chevron-up"></i></a>
 		</div>
 		<!-- END BACK TO TOP -->
-		
-		
+
+
 		<!--
 		===========================================================
 		END PAGE

@@ -67,3 +67,6 @@ gem 'rails_12factor', group: :production
 gem 'mysql2', '>= 0.3.18', '< 0.5'
 gem 'sendgrid-ruby'
 gem "figaro"
+gem 'delayed_job_active_record'
+gem 'daemons'
+gem "delayed_paperclip"
