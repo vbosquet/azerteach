@@ -160,7 +160,23 @@ class Admin::InvoicesController < Admin::AdminController
     respond_to do |format|
       format.json { head :ok }
     end
+  end
 
+  def send_multiple_reminders
+    if params[:billed_lessons_ids].present?
+      invoices = Invoice.joins(:lessons).where("lessons.id IN (?) and lessons.invoice_status != ? and invoices.first_reminder_date IS NULL", params[:billed_lessons_ids], 1).distinct
+      if invoices.present?
+        invoices.each do |invoice|
+          if invoice.update_attributes(first_reminder_date: Date.today)
+            InvoiceMailer.send_reminder_to_student(invoice).deliver_later
+          end
+        end
+      end
+    end
+
+    respond_to do |format|
+      format.json { head :ok }
+    end
   end
 
 private

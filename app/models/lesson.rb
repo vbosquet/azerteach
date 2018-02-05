@@ -7,7 +7,7 @@ class Lesson < ApplicationRecord
   #has_many :students, through: :line_items
   #has_many :line_items
   #has_many :invoices, through: :line_items
-  belongs_to :expense_export, optional: true
+  #belongs_to :expense_export, optional: true
 
   enum invoice_status: {unpaid: 0, paid: 1, part_paid: 2}
 
@@ -26,7 +26,7 @@ class Lesson < ApplicationRecord
 
   def expenses
     if self.teacher.present?
-      return self.duration * 20 
+      return self.duration * 20
     else
       return 0.0
     end

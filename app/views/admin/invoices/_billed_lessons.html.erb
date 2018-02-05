@@ -1,3 +1,5 @@
+<a class="btn btn-info btn-perspective" href="#" id="send-all-reminders"><i class="fa fa-envelope-o"></i> Envoyer un rappel</a>
+
 <h4 class="small-title" style="margin-top: 30px">COURS FACTURES</h4>
 
 <div class="the-box">
@@ -14,6 +16,7 @@
           <th>Montant</th>
           <th>Payement</th>
           <th>Facture</th>
+					<th><%= check_box_tag :all_lessons_to_callback, nil, false, {class: "form-check-input"} %></th>
                   </tr>
 			</thead>
 			<tbody id="billed-lessons_data">
@@ -33,6 +36,7 @@
             <td><%= billed_lesson.full_price - billed_lesson.discount %></td>
             <td><%= billed_lesson.get_payment_status %></td>
             <td><%= billed_lesson.invoice.present? ? (billed_lesson.invoice.sending_date.present? ? "Facture envoyée le #{billed_lesson.invoice.sending_date.strftime("%d/%m/%Y")}" :  "Facture créée le #{billed_lesson.invoice.created_at.strftime("%d/%m/%Y")}") : "Non encore créée" %></td>
+						<td><%= check_box_tag :lesson_to_callback, nil, false, {class: "form-check-input billed-lesson-checkbox", "data-lesson": billed_lesson.id} %></td>
 
           </tr>
         <% end %>

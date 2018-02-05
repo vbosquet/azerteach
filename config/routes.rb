@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   devise_for :users
   root to: 'admin/dashboard#index'
-  
+
   namespace :admin do
     root to: 'dashboard#index'
     resources :users
@@ -20,5 +20,6 @@ Rails.application.routes.draw do
     get 'send_invoice/:id' => "invoices#send_invoice", as: "send_invoice"
     get 'generate_invoices' => "invoices#generate_multiple_invoices", as: "generate_invoices"
     get 'send_invoices' => "invoices#send_multiple_invoices", as: "send_invoices"
-  end  
+    get 'send_reminders' => "invoices#send_multiple_reminders", as: "send_reminders"
+  end
 end

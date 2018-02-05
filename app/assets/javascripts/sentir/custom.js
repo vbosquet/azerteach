@@ -190,6 +190,7 @@ $(document).ready(function() {
 
   var invoiceTable = $('#invoices-datatable').DataTable();
   var billableLessonsTable = $('#billable-lessons-datatable').DataTable();
+  var billedLessonsTable = $('#billed-lessons-datatable').DataTable();
 
   $('#all_lessons_to_bill').on('change', function() {
     if($(this).prop("checked")) {
@@ -210,6 +211,18 @@ $(document).ready(function() {
       });
     } else {
       invoiceTable.$('.invoice-checkbox').each(function() {
+        $(this).prop("checked", false);
+      });
+    }
+  });
+
+  $('#all_lessons_to_callback').on('change', function() {
+    if($(this).prop("checked")) {
+      billedLessonsTable.$('.billed-lesson-checkbox').each(function() {
+        $(this).prop("checked", true);
+      });
+    } else {
+      billedLessonsTable.$('.billed-lesson-checkbox').each(function() {
         $(this).prop("checked", false);
       });
     }
@@ -247,6 +260,25 @@ $(document).ready(function() {
       url: '/admin/send_invoices',
       datatype: "json",
       data: {invoice_ids: invoiceIds},
+      complete: function(response) {
+        document.location.href = '/admin/invoices';
+      }
+    });
+  });
+
+  $('#send-all-reminders').on('click', function() {
+    var lessonIds = []
+
+    billedLessonsTable.$('tr', {"filter":"applied"}).each(function(index,rowhtml){
+      var lessonId = $('input[type="checkbox"]:checked',rowhtml).data("lesson");
+      lessonIds.push(lessonId);
+    });
+
+    $.ajax({
+      type: 'GET',
+      url: '/admin/send_reminders',
+      datatype: "json",
+      data: {billed_lessons_ids: lessonIds},
       complete: function(response) {
         document.location.href = '/admin/invoices';
       }

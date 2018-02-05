@@ -15,4 +15,13 @@ class InvoiceMailer < ApplicationMailer
 		@admin = admin
 		mail(to: admin.email, subject: 'Azerteach - gestion des impayés')
 	end
+
+	def send_reminder_to_student(invoice)
+		@invoice = invoice
+		attachments["#{@invoice.numero}.pdf"] = {
+			mime_type: 'application/pdf',
+			content: open(@invoice.pdf.url).read
+		}
+		mail(:to => 'paulgilsonchun@hotmail.com, vivi_sander@hotmail.com', :subject => "Rappel Payement Facture Azerteach - test envoi automatique")
+	end
 end

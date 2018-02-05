@@ -1,0 +1,34 @@
+<p>Bonjour <%= @invoice.student.name %>,</p>
+<p>Voilà plus de 15 jours que nous vous avons envoyé la facture n° <%= @invoice.numero %> (voir pièce jointe).</p>
+<p>Or, il reste des cours qui n'ont pas été payés</p>
+<p>Voici la liste : </p>
+
+<div class="the-box">
+	<div class="table-responsive">
+		<table class="table table-striped table-hover datatable" id="lessons_to_callback">
+			<thead class="the-box dark full">
+				<tr>
+          <th>Type de cours</th>
+          <th>Date du cours</th>
+          <th>Montant</th>
+			</thead>
+			<tbody id="billed-lessons_data">
+        <% @invoice.lessons.each do |lesson_to_callback| %>
+            <td><%= lesson_to_callback.item_sold %></td>
+            <td><%= lesson_to_callback.invoice_date.strftime("%d/%m/%Y") if lesson_to_callback.invoice_date.present? %></td>
+            <td><%= lesson_to_callback.full_price - lesson_to_callback.discount %></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td></td>
+          <td><strong>Montant total à payer</strong></td>
+          <td><%= @invoice.lessons.where('invoice_status != ?', 1).sum {|l| l.full_price - l.discount }%></td>
+        </tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<p>Nous vous demandons de régler le solde de la facture dès que possible</p>
+<p>Nous restons disponibles pour toute demande d'informations.</p>
+<p>Nous vous souhaitons de passer une agréable journée.</p>
+<p>Cordialement,<br /> L’équipe Azerteach</p>
