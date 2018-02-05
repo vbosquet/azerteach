@@ -142,8 +142,6 @@ class Admin::InvoicesController < Admin::AdminController
 
     respond_to do |format|
       format.json { head :ok }
-      format.js
-      format.html { redirect_to admin_invoices_url }
     end
   end
 
@@ -153,7 +151,7 @@ class Admin::InvoicesController < Admin::AdminController
       if invoices.present?
         invoices.all.each do |invoice|
           if invoice.update_attributes(sending_date: Date.today)
-            InvoiceMailer.send_invoice(invoice).deliver
+            InvoiceMailer.send_invoice(invoice).deliver_later
           end
         end
       end
@@ -161,10 +159,8 @@ class Admin::InvoicesController < Admin::AdminController
 
     respond_to do |format|
       format.json { head :ok }
-      format.js
-      format.html { redirect_to admin_invoices_url }
     end
-    
+
   end
 
 private

@@ -216,9 +216,10 @@ $(document).ready(function() {
   });
 
   $('#bill-all-lessons').on('click', function() {
-    var billableLessonsIds = []
-    billableLessonsTable.$('.billable-lesson-checkbox:checked').each(function() {
-      var lessonId = $(this).data("lesson");
+    var billableLessonsIds = [];
+
+    billableLessonsTable.$('tr', {"filter":"applied"}).each(function(index,rowhtml){
+      var lessonId = $('input[type="checkbox"]:checked',rowhtml).data("lesson");
       billableLessonsIds.push(lessonId);
     });
 
@@ -228,15 +229,16 @@ $(document).ready(function() {
       datatype: "json",
       data: {billable_lessons_ids: billableLessonsIds},
       complete: function(response) {
-        window.location.href = '/admin/invoices';
+        document.location.href = '/admin/invoices';
       }
     });
   });
 
   $('#send-all-invoices').on('click', function() {
     var invoiceIds = []
-    invoiceTable.$('.invoice-checkbox:checked').each(function() {
-      var invoiceId = $(this).data("invoice");
+
+    invoiceTable.$('tr', {"filter":"applied"}).each(function(index,rowhtml){
+      var invoiceId = $('input[type="checkbox"]:checked',rowhtml).data("invoice");
       invoiceIds.push(invoiceId);
     });
 
@@ -246,7 +248,7 @@ $(document).ready(function() {
       datatype: "json",
       data: {invoice_ids: invoiceIds},
       complete: function(response) {
-        window.location.href = '/admin/invoices';
+        document.location.href = '/admin/invoices';
       }
     });
   });

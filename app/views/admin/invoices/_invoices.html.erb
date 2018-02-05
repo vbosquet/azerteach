@@ -1,4 +1,4 @@
-<a class="btn btn-primary btn-perspective" href="<%= admin_send_invoices_path %>" id="send-all-invoices"><i class="fa fa-envelope-o"></i> Envoyer</a>
+<a class="btn btn-primary btn-perspective" href="#" id="send-all-invoices"><i class="fa fa-envelope-o"></i> Envoyer</a>
 
 <h4 class="small-title" style="margin-top: 30px">HISTORIQUE DES FACTURES</h4>
 
@@ -32,7 +32,7 @@
           <td><%= invoice.student.name if invoice.student.present? %></td>
           <td><%= invoice.sending_date.nil? ? "Non encore envoyée" : "Envoyée le #{invoice.sending_date.strftime('%d/%m/%Y')}" %></td>
           <td><%= invoice.payment_date.nil? ? "Non encore payée" : "Payée le #{invoice.sending_date.strftime('%d/%m/%Y')}" %></td>
-          <td><%= link_to "Visualiser la facture", invoice.pdf.url, target: '_blank' %></td>
+          <td><% if invoice.pdf.present? %><%= link_to "Visualiser la facture", invoice.pdf.url, target: '_blank' %><% else %>En cours de création<% end %></td>
           <td><%= check_box_tag :invoice_to_send, nil, false, {class: "form-check-input invoice-checkbox", "data-invoice": invoice.id} %></td>
 
         </tr>

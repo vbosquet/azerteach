@@ -20,7 +20,7 @@ class Invoice < ApplicationRecord
   end
 
   def generate_pdf
-    Delayed::Job.enqueue GeneratePdfJob.new(self)
+    GeneratePdfJob.perform_later(self)
     self.update_attribute(:status, 'queued')
   end
 
