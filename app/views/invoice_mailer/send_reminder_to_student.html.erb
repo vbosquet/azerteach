@@ -12,11 +12,12 @@
           <th>Date du cours</th>
           <th>Montant</th>
 			</thead>
-			<tbody id="billed-lessons_data">
-        <% @invoice.lessons.each do |lesson_to_callback| %>
-            <td><%= lesson_to_callback.item_sold %></td>
-            <td><%= lesson_to_callback.invoice_date.strftime("%d/%m/%Y") if lesson_to_callback.invoice_date.present? %></td>
-            <td><%= lesson_to_callback.full_price - lesson_to_callback.discount %></td>
+			<tbody id="lessons_to_callback_data">
+        <% @invoice.lessons.each do |lesson| %>
+					<tr id="lesson_to_callback_<%= lesson.id %>">
+            <td><%= lesson.item_sold %></td>
+            <td><%= lesson.invoice_date.strftime("%d/%m/%Y") if lesson.invoice_date.present? %></td>
+            <td><%= lesson.full_price - lesson.discount %></td>
           </tr>
         <% end %>
         <tr>

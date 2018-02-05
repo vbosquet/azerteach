@@ -1,14 +1,30 @@
-<p>Bonjour <%= @admin.name %>,</p>
-<% if @unpaids_with_invoice.present? %>
-	<p>Voici la liste des cours facturés il y a 15 jours qui n'ont toujours pas été payés.</p>
-	<ul><% @unpaids_with_invoice.each do |lesson| %>
-		<li><%= lesson.sold_item %> - <%= lesson.invoice_date %></p></li>
-	<% end %></ul>
-<% end %>
-<% if @unpaids_with_no_invoice.present? %>
-	<p>Voici la liste des cours réservés il y a 15 jours qui n'ont toujours pas été facturés.</p>
-	<ul><% @unpaids_with_no_invoice.each do |lesson| %>
-		<li><%= lesson.sold_item %> - <%= lesson.invoice_date %></p></li>
-	<% end %></ul>
-<% end %>
+<p>Bonjour</p>
+<p>Voici la liste des cours facturés il y a plus de 15 jours et qui ne sont toujours pas payés.</p>
 
+<div class="the-box">
+	<div class="table-responsive">
+		<table class="table table-striped table-hover datatable" id="lessons_to_callback">
+			<thead class="the-box dark full">
+				<tr>
+          <th>Type de cours</th>
+          <th>Date du cours</th>
+					<th>Elève</th>
+					<th>Professeur</th>
+          <th>Montant</th>
+					<th>Numéro de facture</th>
+			</thead>
+			<tbody id="lessons_to_callback_data">
+        <% @unpaid_lessons.each do |lesson| %>
+					<tr id="lesson_to_callback<%= lesson.id %>">
+            <td><%= lesson.item_sold %></td>
+            <td><%= lesson.invoice_date.strftime("%d/%m/%Y") if lesson.invoice_date.present? %></td>
+						<th><%= lesson.student.name %></th>
+						<th><%= lesson.teacher_name %></th>
+            <td><%= lesson.full_price - lesson.discount %></td>
+						<th><%= lesson.invoice.numero %></th>
+          </tr>
+        <% end %>
+			</tbody>
+		</table>
+	</div>
+</div>

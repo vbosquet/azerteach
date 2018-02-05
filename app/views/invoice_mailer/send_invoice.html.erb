@@ -1,4 +1,4 @@
-<p>Bonjour <%= @invoice.student.name %>,</p>
+<p>Bonjour <%= @invoice.student.major ? @invoice.student.name : @invoice.student.parent_name %>,</p>
 <p>Veuillez trouver ci-joint la facture relative aux derniers cours réservés au sein de notre assocation.</p>
 <p>Nous vous demandons de la régler dès que possible.</p>
 <p>En cas d'empêchement, n'hésitez pas à nous contacter.</p>

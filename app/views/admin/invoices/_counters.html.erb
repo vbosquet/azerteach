@@ -12,7 +12,7 @@
     <div class="the-box no-border bg-primary rounded tiles-information" id="billed-lessons-button" data-table="billed-lessons">
       <i class="fa fa-users icon-bg"></i>
       <div class="tiles-inner text-center">
-        <p>COURS FACTURES</p>
+        <p>COURS FACTURES IMPAYES</p>
         <h1 class="bolded"><%= @billed_lessons.count %></h1>
       </div>
     </div>
@@ -21,7 +21,7 @@
     <div class="the-box no-border bg-primary rounded tiles-information" id="unpaid-lessons-button" data-table="unpaid-lessons">
       <i class="fa fa-users icon-bg"></i>
       <div class="tiles-inner text-center">
-        <p>COURS IMPAYES</p>
+        <p>COURS IMPAYES APRES 30 JOURS</p>
         <h1 class="bolded"><%= @unpaid_lessons.count %></h1>
       </div>
     </div>

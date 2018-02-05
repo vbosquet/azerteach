@@ -9,11 +9,9 @@ class InvoiceMailer < ApplicationMailer
 		mail(:to => 'paulgilsonchun@hotmail.com, vivi_sander@hotmail.com', :subject => "Facture Azerteach - test envoi automatique")
 	end
 
-	def send_reminder_to_admin(admin, unpaids_with_invoice, unpaids_with_no_invoices)
-		@unpaids_with_invoice = unpaids_with_invoices
-		@unpaids_with_no_invoices = unpaids_with_no_invoices
-		@admin = admin
-		mail(to: admin.email, subject: 'Azerteach - gestion des impayés')
+	def send_reminder_to_admin(unpaid_lessons)
+		@unpaid_lessons = unpaid_lessons
+		mail(to: 'paulgilsonchun@hotmail.com, vivi_sander@hotmail.com', subject: 'Azerteach - gestion des impayés')
 	end
 
 	def send_reminder_to_student(invoice)

@@ -152,6 +152,9 @@ class Admin::InvoicesController < Admin::AdminController
         invoices.all.each do |invoice|
           if invoice.update_attributes(sending_date: Date.today)
             InvoiceMailer.send_invoice(invoice).deliver_later
+            if invoice.amount == 0
+              invoice.set_payment_date
+            end
           end
         end
       end
@@ -187,8 +190,8 @@ private
 
   def find_lessons
     @unpaid_lessons = Lesson.all.where("invoice_status != ?", 1).order('invoice_date ASC').select {|l| l.invoice.present? && l.invoice.sending_date.present? && TimeDifference.between(l.invoice.sending_date, Date.today).in_days > 30}
-    @billed_lessons = Lesson.all.order('invoice_date ASC').select {|l| (l.invoice.present? && l.invoice.sending_date.nil?) || (l.invoice.present? && l.invoice.sending_date.present? && (TimeDifference.between(l.invoice.sending_date, Date.today).in_days <= 30 || l.invoice.payment_status))}
-    @billable_lessons = Lesson.all.where('invoice_id IS NULL').order('invoice_date ASC').select {|l| TimeDifference.between(l.invoice_date, Date.today).in_days > 4}
+    @billed_lessons = Lesson.all.where("invoice_status != ?", 1).order('invoice_date ASC').select {|l| l.invoice.present? && l.invoice.sending_date.present? && (TimeDifference.between(l.invoice.sending_date, Date.today).in_days <= 30 || l.invoice.payment_status)}
+    @billable_lessons = Lesson.all.where('invoice_id IS NULL or id IN (?)', Lesson.all.joins(:invoice).where('lessons.invoice_id IS NOT NULL and invoices.sending_date IS NULL').distinct.map(&:id)).order('invoice_date ASC').select {|l| TimeDifference.between(l.invoice_date, Date.today).in_days > 4}
   end
 
   def increment_numero
