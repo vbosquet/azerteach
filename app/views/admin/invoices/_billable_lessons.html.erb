@@ -36,7 +36,7 @@
             <td><%= billable_lesson.student.name if billable_lesson.student.present? %></td>
             <td><%= billable_lesson.full_price - billable_lesson.discount %></td>
             <td><%= billable_lesson.get_payment_status %></td>
-            <td><%= billable_lesson.invoice.present? ? (billable_lesson.invoice.sending_date.present? ? "Facture envoyée le #{billable_lesson.invoice.sending_date.strftime("%d/%m/%Y")}" :  "Facture créée le #{billable_lesson.invoice.created_at.strftime("%d/%m/%Y")}") : "Non encore créée" %></td>
+            <td><%= billable_lesson.invoice.present? ? (billable_lesson.invoice.sending_date.present? ? "Envoyée le #{billable_lesson.invoice.sending_date.strftime("%d/%m/%Y")}" :  "Créée le #{billable_lesson.invoice.created_at.strftime("%d/%m/%Y")}") : "Non encore créée" %></td>
             <td><%= check_box_tag :lesson_to_bill, nil, false, {class: "form-check-input billable-lesson-checkbox", "data-lesson": billable_lesson.id} %></td>
           </tr>
         <% end %>

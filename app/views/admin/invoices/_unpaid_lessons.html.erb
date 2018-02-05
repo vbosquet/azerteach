@@ -27,7 +27,7 @@
             <td><%= unpaid_lesson.teacher_name %></td>
             <td><%= unpaid_lesson.student.name if unpaid_lesson.student.present? %></td>
             <td><%= unpaid_lesson.full_price - unpaid_lesson.discount %></td>
-            <td><%= unpaid_lesson.invoice.present? ? (unpaid_lesson.invoice.sending_date.present? ? "Facture envoyée le #{unpaid_lesson.invoice.sending_date.strftime("%d/%m/%Y")}" :  "Facture créée le #{unpaid_lesson.invoice.created_at.strftime("%d/%m/%Y")}") : "Non encore créée" %></td>
+            <td><%= unpaid_lesson.invoice.present? ? (unpaid_lesson.invoice.sending_date.present? ? "Envoyée le #{unpaid_lesson.invoice.sending_date.strftime("%d/%m/%Y")}" :  "Créée le #{unpaid_lesson.invoice.created_at.strftime("%d/%m/%Y")}") : "Non encore créée" %></td>
 
           </tr>
         <% end %>

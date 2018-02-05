@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180202122337) do
+ActiveRecord::Schema.define(version: 20180205134308) do
 
   create_table "delayed_jobs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "priority", default: 0, null: false
@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(version: 20180202122337) do
     t.string "invoice_number"
     t.integer "invoice_status"
     t.integer "invoice_id"
+    t.integer "duration"
   end
 
   create_table "line_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
