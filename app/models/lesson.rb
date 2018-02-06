@@ -55,7 +55,7 @@ class Lesson < ApplicationRecord
     header = spreadsheet.row(1)
     (2..spreadsheet.last_row).each do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
-      if row["Client ID"].present? && row["Client ID"] != ''
+      if row["Client ID"].present? && row["Client ID"] != '' && row["Invoice Date"].present?
         insert_lessons(row)
       elsif row["Duration"].present?
         insert_duration(row)
