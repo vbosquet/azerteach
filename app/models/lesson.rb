@@ -86,7 +86,7 @@ class Lesson < ApplicationRecord
     lesson.item_group = row["Item Group"]
     lesson.full_price = row["Item Full Price"]
     lesson.discount = row["Discount Amount"]
-    lesson.invoice_date = Date.parse(row["Invoice Date"])
+    lesson.invoice_date = row["Invoice Date"]
     lesson.invoice_number = row["Invoice Number"]
     lesson.invoice_status = set_status(row["Invoice Status"])
     student = Student.find_by_code(row["Client ID"])
